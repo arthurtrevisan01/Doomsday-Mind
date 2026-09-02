@@ -636,3 +636,75 @@ document.addEventListener("keydown", (e) => {
 /* ---------- Início ---------- */
 renderSessionStrip();
 newQuestion();
+
+// --- Service Worker Registration ---
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/sw.js')
+      .then((registration) => {
+        console.log('SW registrada:', registration.scope);
+      })
+      .catch((err) => {
+        console.error('Falha ao registrar SW:', err);
+      });
+  });
+}
+
+// --- iOS Installation Banner Logic ---
+function isiOS() {
+  const userAgent = navigator.userAgent || navigator.vendor || window.opera;
+  const agentScreen = navigator.appVersion || '';
+  const isIOS = /iPad|iPhone|iPod/.test(userAgent) && !window.MSStream;
+  const isIPadOS = navigator.maxTouchPoints > 1 && /MacIntel/.test(userAgent);
+  return isIOS || isIPadOS;
+}
+
+function isStandalone() {
+  return navigator.standalone || window.matchMedia('(display-mode: standalone)').matches;
+}
+
+// Check if the user has already dismissed the banner
+const dismissed = localStorage.getItem('install-banner-dismissed');
+
+if (!isiOS() || isStandalone() || dismissed) {
+  // Hide the banner on non-iOS, already standalone, or dismissed
+  const banner = document.getElementById('install-banner');
+  if (banner) banner.classList.add('hidden');
+}
+
+// Handle install button
+const installBtn = document.getElementById('install-btn');
+const closeBtn = document.getElementById('close-install-banner');
+const banner = document.getElementById('install-banner');
+
+if (installBtn && banner) {
+  installBtn.addEventListener('click', (e) => {
+    e.preventDefault();
+    // Use Safari's share menu to prompt "Add to Home Screen"
+    if (navigator.share) {
+      navigator.share({
+        title: 'Doomsday Mind',
+        url: window.location.href,
+      }).then(() => {
+        // Mark as dismissed after sharing
+        localStorage.setItem('install-banner-dismissed', '1');
+        banner.classList.add('hidden');
+      }).catch(() => {
+        // fallback: just mark dismissed
+        localStorage.setItem('install-banner-dismissed', '1');
+        banner.classList.add('hidden');
+      });
+    } else {
+      // fallback for browsers without Share API
+      localStorage.setItem('install-banner-dismissed', '1');
+      banner.classList.add('hidden');
+    }
+  });
+}
+
+if (closeBtn && banner) {
+  closeBtn.addEventListener('click', () => {
+    localStorage.setItem('install-banner-dismissed', '1');
+    banner.classList.add('hidden');
+  });
+}

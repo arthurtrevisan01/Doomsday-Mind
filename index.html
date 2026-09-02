@@ -2,11 +2,30 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!-- viewport com viewport-fit=cover para cobrir toda a tela incluindo Dynamic Island -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <title>Doomsday Mind — Treine o Método Doomsday</title>
+
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet" />
+
+  <link rel="manifest" href="manifest.webmanifest" />
+  <meta name="theme-color" content="#0b0e14" />
+
+  <!-- Metas iOS -->
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Doomsday" />
+  <meta name="format-detection" content="telephone=no" />
+
+  <!-- Ícones para Adicionar à Tela de Início iOS -->
+  <link rel="apple-touch-icon" href="icons/icon-120.png" sizes="120x120" />
+  <link rel="apple-touch-icon" href="icons/icon-152.png" sizes="152x152" />
+  <link rel="apple-touch-icon" href="icons/icon-167.png" sizes="167x167" />
+  <link rel="apple-touch-icon" href="icons/icon-180.png" sizes="180x180" />
+
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
@@ -250,7 +269,16 @@
       </div>
     </main>
 
-    <footer class="footer">Doomsday Mind — método de John H. Conway • calendário gregoriano (a partir de 1583)</footer>
+    <!-- Banner de instalação iOS (apenas Safari iOS fora do modo standalone) -->
+<div id="install-banner" class="install-banner hidden" role="alert">
+  <div class="install-banner-content">
+    <p>Adicione este aplicativo à sua tela de início</p>
+    <button id="install-btn">Compartilhar > "Adicionar à Tela de Início"</button>
+    <button id="close-install-banner">×</button>
+  </div>
+</div>
+
+<footer class="footer">Doomsday Mind — método de John H. Conway • calendário gregoriano (a partir de 1583)</footer>
   </div>
 
   <script src="app.js"></script>
