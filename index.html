@@ -1,3 +1,4 @@
+=================================================================
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -33,248 +34,48 @@
     <header class="header">
       <div class="brand">
         <div class="logo">☠️</div>
-        <div>
-          <h1>Doomsday <span>Mind</span></h1>
-          <p class="tagline">Treine o método Doomsday de John Conway</p>
-        </div>
+        <div><h1>Doomsday <span>Mind</span></h1><p class="tagline">Treine o método Doomsday de John Conway</p></div>
       </div>
-      <nav class="tabs">
-        <button class="tab active" data-tab="practice">🎯 Praticar</button>
-        <button class="tab" data-tab="learn">📚 Aprender</button>
-        <button class="tab" data-tab="stats">📊 Estatísticas</button>
-      </nav>
+      <nav class="tabs"><button class="tab active" data-tab="practice">🎯 Praticar</button><button class="tab" data-tab="learn">📚 Aprender</button><button class="tab" data-tab="stats">📊 Estatísticas</button></nav>
     </header>
 
     <!-- ===== PRACTICE ===== -->
     <main class="panel active" id="panel-practice">
-      <!-- Config bar -->
       <section class="config-bar">
-        <div class="config-group">
-          <label>Modo de treino</label>
-          <div class="seg" id="mode-seg">
-            <button class="seg-btn active" data-mode="full">Data completa</button>
-            <button class="seg-btn" data-mode="century">Âncora do século</button>
-            <button class="seg-btn" data-mode="year">Doomsday do ano</button>
-            <button class="seg-btn" data-mode="month">Referência do mês</button>
-          </div>
-        </div>
-        <div class="config-group">
-          <label>Intervalo de anos</label>
-          <div class="seg" id="range-seg">
-            <button class="seg-btn" data-range="1900,1999">1900–1999</button>
-            <button class="seg-btn active" data-range="1900,2099">1900–2099</button>
-            <button class="seg-btn" data-range="2000,2099">2000–2099</button>
-            <button class="seg-btn" data-range="1800,2199">1800–2199</button>
-            <button class="seg-btn" data-range="1583,2500">1583–2500</button>
-          </div>
-        </div>
-        <div class="config-group">
-          <label>Cronômetro</label>
-          <div class="seg" id="timer-seg">
-            <button class="seg-btn active" data-timer="0">Livre</button>
-            <button class="seg-btn" data-timer="120">2 min</button>
-            <button class="seg-btn" data-timer="60">60 s</button>
-            <button class="seg-btn" data-timer="30">30 s</button>
-            <button class="seg-btn" data-timer="15">15 s</button>
-          </div>
-        </div>
+        <div class="config-group"><label>Modo de treino</label><div class="seg" id="mode-seg"><button class="seg-btn active" data-mode="full">Data completa</button><button class="seg-btn" data-mode="century">Âncora do século</button><button class="seg-btn" data-mode="year">Doomsday do ano</button><button class="seg-btn" data-mode="month">Referência do mês</button></div></div>
+        <div class="config-group"><label>Intervalo de anos</label><div class="seg" id="range-seg"><button class="seg-btn" data-range="1900,1999">1900–1999</button><button class="seg-btn active" data-range="1900,2099">1900–2099</button><button class="seg-btn" data-range="2000,2099">2000–2099</button><button class="seg-btn" data-range="1800,2199">1800–2199</button><button class="seg-btn" data-range="1583,2500">1583–2500</button></div></div>
+        <div class="config-group"><label>Cronômetro</label><div class="seg" id="timer-seg"><button class="seg-btn active" data-timer="0">Livre</button><button class="seg-btn" data-timer="120">2 min</button><button class="seg-btn" data-timer="60">60 s</button><button class="seg-btn" data-timer="30">30 s</button><button class="seg-btn" data-timer="15">15 s</button></div></div>
       </section>
-
-      <!-- Session stat strip -->
-      <section class="session-strip">
-        <div class="chip"><span class="chip-label">Sessão</span><span class="chip-value" id="s-count">0</span></div>
-        <div class="chip good"><span class="chip-label">Acertos</span><span class="chip-value" id="s-correct">0</span></div>
-        <div class="chip bad"><span class="chip-label">Erros</span><span class="chip-value" id="s-wrong">0</span></div>
-        <div class="chip streak"><span class="chip-label">🔥 Sequência</span><span class="chip-value" id="s-streak">0</span></div>
-        <div class="chip"><span class="chip-label">Precisão</span><span class="chip-value" id="s-acc">—</span></div>
-        <div class="chip"><span class="chip-label">Tempo médio</span><span class="chip-value" id="s-avg">—</span></div>
-      </section>
-
-      <!-- Question card -->
+      <section class="session-strip"><div class="chip"><span class="chip-label">Sessão</span><span class="chip-value" id="s-count">0</span></div><div class="chip good"><span class="chip-label">Acertos</span><span class="chip-value" id="s-correct">0</span></div><div class="chip bad"><span class="chip-label">Erros</span><span class="chip-value" id="s-wrong">0</span></div><div class="chip streak"><span class="chip-label">🔥 Sequência</span><span class="chip-value" id="s-streak">0</span></div><div class="chip"><span class="chip-label">Precisão</span><span class="chip-value" id="s-acc">—</span></div><div class="chip"><span class="chip-label">Tempo médio</span><span class="chip-value" id="s-avg">—</span></div></section>
       <section class="question-card" id="question-card">
-        <div class="q-top">
-          <span class="q-mode-badge" id="q-mode-badge">Data completa</span>
-          <div class="q-timer" id="q-timer"><span id="q-timer-value">0,0s</span></div>
-        </div>
-        <p class="q-prompt" id="q-prompt">Em que dia da semana caiu…</p>
-        <div class="q-main" id="q-main">—</div>
-        <div class="q-sub" id="q-sub"></div>
-
-        <!-- Weekday answers -->
-        <div class="answers" id="answers-week">
-          <button class="ans" data-dow="0"><kbd>1</kbd>Domingo</button>
-          <button class="ans" data-dow="1"><kbd>2</kbd>Segunda</button>
-          <button class="ans" data-dow="2"><kbd>3</kbd>Terça</button>
-          <button class="ans" data-dow="3"><kbd>4</kbd>Quarta</button>
-          <button class="ans" data-dow="4"><kbd>5</kbd>Quinta</button>
-          <button class="ans" data-dow="5"><kbd>6</kbd>Sexta</button>
-          <button class="ans" data-dow="6"><kbd>7</kbd>Sábado</button>
-        </div>
-
-        <!-- Numeric answer (month reference mode) -->
-        <div class="answers-num hidden" id="answers-num">
-          <input type="number" id="num-input" min="0" max="31" placeholder="dia" autocomplete="off" />
-          <button class="btn primary" id="num-submit">Responder ↵</button>
-        </div>
-
-        <div class="q-actions">
-          <button class="btn ghost" id="btn-skip">Pular (Esc)</button>
-        </div>
-      </section>
-
-      <!-- Feedback / correction -->
-      <section class="feedback hidden" id="feedback">
-        <div class="fb-header" id="fb-header">
-          <div class="fb-verdict" id="fb-verdict">✅ Acertou!</div>
-          <div class="fb-meta" id="fb-meta"></div>
-        </div>
-        <div class="fb-answer" id="fb-answer"></div>
-        <details class="fb-steps" id="fb-steps" open>
-          <summary>🧮 Correção passo a passo</summary>
-          <div class="steps" id="steps-container"></div>
-        </details>
-        <button class="btn primary big" id="btn-next">Próxima pergunta ↵</button>
-      </section>
+        <div class="q-top"><span class="q-mode-badge" id="q-mode-badge">Data completa</span><div class="q-timer" id="q-timer"><span id="q-timer-value">0,0s</span></div></div><p class="q-prompt" id="q-prompt">Em que dia da semana caiu…</p><div class="q-main" id="q-main">—</div><div class="q-sub" id="q-sub"></div><div class="answers" id="answers-week"><button class="ans" data-dow="0"><kbd>1</kbd>Domingo</button><button class="ans" data-dow="1"><kbd>2</kbd>Segunda</button><button class="ans" data-dow="2"><kbd>3</kbd>Terça</button><button class="ans" data-dow="3"><kbd>4</kbd>Quarta</button><button class="ans" data-dow="4"><kbd>5</kbd>Quinta</button><button class="ans" data-dow="5"><kbd>6</kbd>Sexta</button><button class="ans" data-dow="6"><kbd>7</kbd>Sábado</button></div><div class="answers-num hidden" id="answers-num"><input type="number" id="num-input" min="0" max="31" placeholder="dia" autocomplete="off" /><button class="btn primary" id="num-submit">Responder ↵</button></div><div class="q-actions"><button class="btn ghost" id="btn-skip">Pular (Esc)</button></div></section>
+      <section class="feedback hidden" id="feedback"><div class="fb-header"><div class="fb-verdict" id="fb-verdict">✅ Acertou!</div><div class="fb-meta" id="fb-meta"></div></div><div class="fb-answer" id="fb-answer"></div><details class="fb-steps" id="fb-steps" open><summary>🧮 Correção passo a passo</summary><div class="steps" id="steps-container"></div></details><button class="btn primary big" id="btn-next">Próxima pergunta ↵</button></section>
     </main>
 
     <!-- ===== LEARN ===== -->
     <main class="panel" id="panel-learn">
       <div class="learn-grid">
-        <article class="card">
-          <h2>🧠 O que é o método Doomsday?</h2>
-          <p>Criado pelo matemático <strong>John Horton Conway</strong>, o método Doomsday permite calcular mentalmente o dia da semana de <em>qualquer data</em> do calendário gregoriano. A ideia central: em todo ano, um conjunto de datas fáceis de memorizar cai sempre no <strong>mesmo dia da semana</strong> — o "Doomsday" (dia do juízo) daquele ano.</p>
-          <p>O cálculo tem 3 etapas:</p>
-          <ol>
-            <li><strong>Âncora do século</strong> — cada século tem um dia-âncora fixo.</li>
-            <li><strong>Doomsday do ano</strong> — desloca a âncora conforme o ano dentro do século.</li>
-            <li><strong>Ajuste do mês/dia</strong> — compara a data pedida com a data-referência do mês.</li>
-          </ol>
-        </article>
-
-        <article class="card">
-          <h2>1️⃣ Âncoras dos séculos</h2>
-          <p>As âncoras se repetem a cada 400 anos:</p>
-          <table>
-            <thead><tr><th>Século</th><th>Âncora</th></tr></thead>
-            <tbody>
-              <tr><td>1700–1799</td><td>Domingo</td></tr>
-              <tr><td>1800–1899</td><td>Sexta-feira</td></tr>
-              <tr><td>1900–1999</td><td class="hl">Quarta-feira</td></tr>
-              <tr><td>2000–2099</td><td class="hl">Terça-feira</td></tr>
-              <tr><td>2100–2199</td><td>Domingo</td></tr>
-            </tbody>
-          </table>
-          <p class="tip">💡 Fórmula: <code>âncora = (5 × (século mod 4) + 2) mod 7</code>, onde século = ⌊ano/100⌋ e 0 = domingo. Mnemônico em inglês: "<em>We-in-dis-day</em>" → 1900 = <b>We</b>dnesday (quarta), 2000 = <b>Tues</b>day (terça).</p>
-        </article>
-
-        <article class="card">
-          <h2>2️⃣ Doomsday do ano</h2>
-          <p>Pegue os 2 últimos dígitos do ano (<code>y</code>) e calcule:</p>
-          <div class="formula">
-            a = ⌊y ÷ 12⌋ &nbsp;•&nbsp; b = y mod 12 &nbsp;•&nbsp; c = ⌊b ÷ 4⌋<br/>
-            <strong>Doomsday = (âncora + a + b + c) mod 7</strong>
-          </div>
-          <p><strong>Exemplo (1985):</strong> y = 85 → a = 7, b = 1, c = 0 → 7+1+0 = 8 ≡ 1 (mod 7). Âncora de 1900 = quarta (3). 3 + 1 = 4 → <strong>quinta-feira</strong>.</p>
-          <h3>Alternativa: método "Ímpar + 11"</h3>
-          <ol>
-            <li>Se <code>y</code> é ímpar, some 11.</li>
-            <li>Divida por 2.</li>
-            <li>Se o resultado é ímpar, some 11.</li>
-            <li>Calcule <code>7 − (resultado mod 7)</code> → esse é o deslocamento a somar na âncora.</li>
-          </ol>
-        </article>
-
-        <article class="card">
-          <h2>3️⃣ Datas-referência de cada mês</h2>
-          <p>Todas estas datas caem no Doomsday do ano:</p>
-          <table>
-            <thead><tr><th>Mês</th><th>Data</th><th>Mnemônico</th></tr></thead>
-            <tbody>
-              <tr><td>Janeiro</td><td>03/01 (04/01 se bissexto)</td><td>"3 em 3 anos de 4, no 4º é 4"</td></tr>
-              <tr><td>Fevereiro</td><td>28/02 (29/02 se bissexto)</td><td>Último dia de fevereiro</td></tr>
-              <tr><td>Março</td><td>14/03</td><td>Dia do Pi (3.14)</td></tr>
-              <tr><td>Abril</td><td>04/04</td><td rowspan="4">Meses pares: dia = mês<br/>(4/4, 6/6, 8/8, 10/10, 12/12)</td></tr>
-              <tr><td>Junho</td><td>06/06</td></tr>
-              <tr><td>Agosto</td><td>08/08</td></tr>
-              <tr><td>Outubro</td><td>10/10</td></tr>
-              <tr><td>Dezembro</td><td>12/12</td><td></td></tr>
-              <tr><td>Maio</td><td>09/05</td><td rowspan="4">"Trabalho das 9 às 5 no 7-Eleven"<br/>(9/5, 5/9, 7/11, 11/7)</td></tr>
-              <tr><td>Setembro</td><td>05/09</td></tr>
-              <tr><td>Julho</td><td>11/07</td></tr>
-              <tr><td>Novembro</td><td>07/11</td></tr>
-            </tbody>
-          </table>
-        </article>
-
-        <article class="card">
-          <h2>🔢 Exemplo completo: 20/07/1969 (chegada à Lua)</h2>
-          <ol>
-            <li>Século 1900 → âncora = <strong>quarta (3)</strong>.</li>
-            <li>y = 69 → a = ⌊69/12⌋ = 5, b = 69 mod 12 = 9, c = ⌊9/4⌋ = 2 → 5+9+2 = 16 ≡ 2. Doomsday = 3+2 = 5 → <strong>sexta</strong>.</li>
-            <li>Referência de julho: <strong>11/07</strong> (sexta). Do dia 11 ao 20 são 9 dias → 9 mod 7 = 2. Sexta + 2 = <strong>domingo</strong>. ✅</li>
-          </ol>
-          <p class="tip">💡 Ano bissexto: divisível por 4, exceto múltiplos de 100 que não sejam múltiplos de 400. (2000 foi bissexto; 1900 não.)</p>
-        </article>
-
-        <article class="card">
-          <h2>⌨️ Atalhos do teclado</h2>
-          <table>
-            <tbody>
-              <tr><td><kbd>1</kbd>–<kbd>7</kbd></td><td>Responder (1 = domingo … 7 = sábado)</td></tr>
-              <tr><td><kbd>Enter</kbd></td><td>Próxima pergunta / enviar resposta numérica</td></tr>
-              <tr><td><kbd>Esc</kbd></td><td>Pular pergunta</td></tr>
-            </tbody>
-          </table>
-        </article>
+        <article class="card"><h2>🧠 O que é o método Doomsday?</h2><p>Criado pelo matemático <strong>John Horton Conway</strong>, o método Doomsday permite calcular mentalmente o dia da semana de <em>qualquer data</em> do calendário gregoriano. A ideia central: em todo ano, um conjunto de datas fáceis de memorizar cai sempre no <strong>mesmo dia da semana</strong> — o "Doomsday" (dia do juízo) daquele ano.</p><p>O cálculo tem 3 etapas:</p><ol><li><strong>Âncora do século</strong> — cada século tem um dia-âncora fixo.</li><li><strong>Doomsday do ano</strong> — desloca a âncora conforme o ano dentro do século.</li><li><strong>Ajuste do mês/dia</strong> — compara a data pedida com a data-referência do mês.</li></ol></article>
+        <article class="card"><h2>1️⃣ Âncoras dos séculos</h2><p>As âncoras se repetem a cada 400 anos:</p><table><thead><tr><th>Século</th><th>Âncora</th></tr></thead><tbody><tr><td>1700–1799</td><td>Domingo</td></tr><tr><td>1800–1899</td><td>Sexta-feira</td></tr><tr><td>1900–1999</td><td class="hl">Quarta-feira</td></tr><tr><td>2000–2099</td><td class="hl">Terça-feira</td></tr><tr><td>2100–2199</td><td>Domingo</td></tr></tbody></table><p class="tip">💡 Fórmula: <code>âncora = (5 × (século mod 4) + 2) mod 7</code>, onde século = ⌊ano/100⌋ e 0 = domingo. Mnemônico em inglês: "<em>We-in-dis-day</em>" → 1900 = <b>We</b>dnesday (quarta), 2000 = <b>Tues</b>day (terça).</p></article>
+        <article class="card"><h2>2️⃣ Doomsday do ano</h2><p>Pegue os 2 últimos dígitos do ano (<code>y</code>) e calcule:</p><div class="formula">a = ⌊y ÷ 12⌋ &nbsp;•&nbsp; b = y mod 12 &nbsp;•&nbsp; c = ⌊b ÷ 4⌋<br/><strong>Doomsday = (âncora + a + b + c) mod 7</strong></div><p><strong>Exemplo (1985):</strong> y = 85 → a = 7, b = 1, c = 0 → 7+1+0 = 8 ≡ 1 (mod 7). Âncora de 1900 = quarta (3). 3 + 1 = 4 → <strong>quinta-feira</strong>.</h3>Alternativa: método "Ímpar + 11"</h3><ol><li>Se <code>y</code> é ímpar, some 11.</li><li>Divida por 2.</li><li>Se o resultado é ímpar, some 11.</li><li>Calcule <code>7 − (resultado mod 7)</code> → esse é o deslocamento a somar na âncora.</li></ol></article>
+        <article class="card"><h2>3️⃣ Datas-referência de cada mês</h2><p>Todas estas datas caem no Doomsday do ano:</p><table><thead><tr><th>Mês</th><th>Data</th><th>Mnemônico</th></tr></thead><tbody><tr><td>Janeiro</td><td>03/01 (04/01 se bissexto)</td><td>"3 em 3 anos de 4, no 4º é 4"</td></tr><tr><td>Fevereiro</td><td>28/02 (29/02 se bissexto)</td><td>Último dia de fevereiro</td></tr><tr><td>Março</td><td>14/03</td><td>Dia do Pi (3.14)</td></tr><tr><td>Abril</td><td>04/04</td><td rowspan="4">Meses pares: dia = mês<br/>(4/4, 6/6, 8/8, 10/10, 12/12)</td></tr><tr><td>Junho</td><td>06/06</td></tr><tr><td>Agosto</td><td>08/08</td></tr><tr><td>Outubro</td><td>10/10</td></tr><tr><td>Dezembro</td><td>12/12</td><td></td></tr><tr><td>Maio</td><td>09/05</td><td rowspan="4">"Trabalho das 9 às 5 no 7-Eleven"<br/>(9/5, 5/9, 7/11, 11/7)</td></tr><tr><td>Setembro</td><td>05/09</td></tr><tr><td>Julho</td><td>11/07</td></tr><tr><td>Novembro</td><td>07/11</td></tr></tbody></table></article>
+        <article class="card"><h2>🔢 Exemplo completo: 20/07/1969 (chegada à Lua)</h2><ol><li>Século 1900 → âncora = <strong>quarta (3)</strong>.</li><li>y = 69 → a = ⌊69/12⌋ = 5, b = 69 mod 12 = 9, c = ⌊9/4⌋ = 2 → 5+9+2 = 16 ≡ 2. Doomsday = 3+2 = 5 → <strong>sexta</strong>.</li><li>Referência de julho: <strong>11/07</strong> (sexta). Do dia 11 ao 20 são 9 dias → 9 mod 7 = 2. Sexta + 2 = <strong>domingo</strong>. ✅</li></ol><p class="tip">💡 Ano bissexto: divisível por 4, exceto múltiplos de 100 que não sejam múltiplos de 400. (2000 foi bissexto; 1900 não.)</p></article>
+        <article class="card"><h2>⌨️ Atalhos do teclado</h2><table><tbody><tr><td><kbd>1</kbd>–<kbd>7</kbd></td><td>Responder (1 = domingo … 7 = sábado)</td></tr><tr><td><kbd>Enter</kbd></td><td>Próxima pergunta / enviar resposta numérica</td></tr><tr><td><kbd>Esc</kbd></td><td>Pular pergunta</td></tr></tbody></table></article>
       </div>
     </main>
 
     <!-- ===== STATS ===== -->
     <main class="panel" id="panel-stats">
-      <div class="stats-grid">
-        <div class="stat-card"><div class="stat-value" id="g-total">0</div><div class="stat-label">Tentativas totais</div></div>
-        <div class="stat-card"><div class="stat-value" id="g-acc">—</div><div class="stat-label">Precisão geral</div></div>
-        <div class="stat-card"><div class="stat-value" id="g-best-streak">0</div><div class="stat-label">🔥 Melhor sequência</div></div>
-        <div class="stat-card"><div class="stat-value" id="g-avg-time">—</div><div class="stat-label">⏱️ Tempo médio</div></div>
-        <div class="stat-card"><div class="stat-value" id="g-best-time">—</div><div class="stat-label">⚡ Resposta mais rápida (acerto)</div></div>
-        <div class="stat-card"><div class="stat-value" id="g-today">0</div><div class="stat-label">Tentativas hoje</div></div>
-      </div>
-
-      <div class="card">
-        <h2>Últimas 50 tentativas</h2>
-        <div class="history-dots" id="history-dots"></div>
-        <div class="legend">
-          <span><i class="dot ok"></i> acerto</span>
-          <span><i class="dot no"></i> erro</span>
-          <span><i class="dot to"></i> tempo esgotado / pulada</span>
-        </div>
-      </div>
-
-      <div class="card">
-        <h2>Desempenho por modo</h2>
-        <table id="mode-table">
-          <thead><tr><th>Modo</th><th>Tentativas</th><th>Acertos</th><th>Precisão</th><th>Tempo médio</th></th></thead>
-          <tbody id="mode-table-body"></tbody>
-        </table>
-      </div>
-
-      <div class="card">
-        <h2>Evolução da precisão <small>(blocos de 10 tentativas)</small></h2>
-        <canvas id="progress-chart" width="900" height="220"></canvas>
-      </div>
-
-      <div class="danger-zone">
-        <button class="btn danger" id="btn-reset-stats">🗑️ Apagar todo o histórico</button>
-      </div>
+      <div class="stats-grid"><div class="stat-card"><div class="stat-value" id="g-total">0</div><div class="stat-label">Tentativas totais</div></div><div class="stat-card"><div class="stat-value" id="g-acc">—</div><div class="stat-label">Precisão geral</div></div><div class="stat-card"><div class="stat-value" id="g-best-streak">0</div><div class="stat-label">🔥 Melhor sequência</div></div><div class="stat-card"><div class="stat-value" id="g-avg-time">—</div><div class="stat-label">⏱️ Tempo médio</div></div><div class="stat-card"><div class="stat-value" id="g-best-time">—</div><div class="stat-label">⚡ Resposta mais rápida (acerto)</div></div><div class="stat-card"><div class="stat-value" id="g-today">0</div><div class="stat-label">Tentativas hoje</div></div></div>
+      <div class="card"><h2>Últimas 50 tentativas</h2><div class="history-dots" id="history-dots"></div><div class="legend"><span><i class="dot ok"></i> acerto</span><span><i class="dot no"></i> erro</span><span><i class="dot to"></i> tempo esgotado / pulada</span></div></div>
+      <div class="card"><h2>Desempenho por modo</h2><table id="mode-table"><thead><tr><th>Modo</th><th>Tentativas</th><th>Acertos</th><th>Precisão</th><th>Tempo médio</th></th></thead><tbody id="mode-table-body"></tbody></table></div>
+      <div class="card"><h2>Evolução da precisão <small>(blocos de 10 tentativas)</small></h2><canvas id="progress-chart" width="900" height="220"></canvas></div>
+      <div class="danger-zone"><button class="btn danger" id="btn-reset-stats">🗑️ Apagar todo o histórico</button></div>
     </main>
 
     <!-- Banner de instalação iOS (apenas Safari iOS fora do modo standalone) -->
 <div id="install-banner" class="install-banner hidden" role="alert">
-  <div class="install-banner-content">
-    <p>Adicione este aplicativo à sua tela de início</p>
-    <button id="install-btn">Compartilhar > "Adicionar à Tela de Início"</button>
-    <button id="close-install-banner">×</button>
-  </div>
+  <div class="install-banner-content"><p>Adicione este aplicativo à sua tela de início</p><button id="install-btn">Compartilhar > "Adicionar à Tela de Início"</button><button id="close-install-banner">×</button></div>
 </div>
 
 <footer class="footer">Doomsday Mind — método de John H. Conway • calendário gregoriano (a partir de 1583)</footer>
@@ -283,3 +84,4 @@
   <script src="app.js"></script>
 </body>
 </html>
+================================================================
