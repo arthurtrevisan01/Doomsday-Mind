@@ -1,503 +1,1880 @@
-gere um app pra mim praticar o método doomsday com base nisso: 
-
-# 📖 Doomsday Mind — Documentação Completa do Projeto
-
-> Documentação técnica gerada por análise direta do código-fonte real do repositório.
-> Nada aqui foi presumido: tudo que está descrito existe no código; o que não pôde ser confirmado está marcado como **"não identificado no código"**.
-
----
-
-## Sumário
-
-1. [Visão geral](#1-visão-geral)
-2. [Estrutura de arquivos e pastas](#2-estrutura-de-arquivos-e-pastas)
-3. [index.html — estrutura e componentes](#3-indexhtml--estrutura-e-componentes)
-4. [styles.css — layout, tema e responsividade](#4-stylescss--layout-tema-e-responsividade)
-5. [Paleta visual e tipografia](#5-paleta-visual-e-tipografia)
-6. [app.js — lógica, estados e eventos](#6-appjs--lógica-estados-e-eventos)
-7. [PWA — manifest, Service Worker e instalação](#7-pwa--manifest-service-worker-e-instalação)
-8. [Dados, armazenamento e APIs](#8-dados-armazenamento-e-apis)
-9. [Como HTML, CSS e JS se conectam — fluxos de execução](#9-como-html-css-e-js-se-conectam--fluxos-de-execução)
-10. [Responsividade e acessibilidade](#10-responsividade-e-acessibilidade)
-11. [Problemas, inconsistências e código não utilizado](#11-problemas-inconsistências-e-código-não-utilizado)
-12. [Resumo geral](#12-resumo-geral)
-
----
+# Doomsday Mind V2 — Especificação completa do projeto
 
 ## 1. Visão geral
 
-**Doomsday Mind** é um Progressive Web App (PWA) de página única (SPA) para treinar o **método Doomsday de John H. Conway** — técnica de cálculo mental do dia da semana de qualquer data do calendário gregoriano.
+O **Doomsday Mind** será um PWA de treinamento mental voltado para cálculo rápido de dias da semana.
 
-- **Tecnologias:** HTML5, CSS3 e JavaScript puro (vanilla, ES2017+). **Zero dependências**, sem frameworks, sem bundler, sem build.
-- **Idioma da interface:** português do Brasil (`lang="pt-BR"`).
-- **Recursos externos:** apenas Google Fonts (Inter e JetBrains Mono), com fallback para fontes do sistema.
-- **Persistência:** `localStorage` do navegador (sem backend, sem servidor de dados).
-- **PWA:** instalável (com foco em iPhone/iOS), funciona 100% offline após a primeira visita.
+O produto não será uma calculadora comum. Ele funcionará como um treinador cognitivo, com foco em:
+
+- Velocidade;
+- Precisão;
+- Memorização;
+- Raciocínio mental;
+- Repetição deliberada;
+- Feedback pedagógico;
+- Progressão pessoal;
+- Consistência diária.
+
+O método principal da V2 será o **Ímpar + 11**, utilizado para calcular o código do ano dentro do método Doomsday.
+
+O método tradicional de Conway continuará podendo existir como:
+
+- Método alternativo;
+- Conteúdo complementar;
+- Comparação;
+- Ferramenta de conferência;
+- Material de aprendizado avançado.
+
+A experiência principal será:
+
+```text
+Escolher treino
+       ↓
+Receber desafio
+       ↓
+Calcular mentalmente
+       ↓
+Responder
+       ↓
+Receber correção
+       ↓
+Entender o raciocínio
+       ↓
+Ganhar XP
+       ↓
+Acompanhar evolução
+       ↓
+Treinar novamente
+```
 
 ---
 
-## 2. Estrutura de arquivos e pastas
+# 2. Objetivo do produto
 
+O aplicativo deverá ajudar o usuário a:
 
-Doomsday-Mind/
-├── index.html            (286 linhas) — estrutura da SPA: 3 painéis (Praticar/Aprender/Estatísticas)
-├── styles.css            (341 linhas) — tema escuro completo, responsividade, animações
-├── app.js                (666 linhas) — toda a lógica: método Doomsday, perguntas, correção, timer, stats, PWA
-├── sw.js                 (111 linhas) — Service Worker: pré-cache, estratégias de cache, offline
-├── manifest.webmanifest  (22 linhas)  — manifesto do PWA (nome, ícones, cores, display)
-├── README.md             — contém apenas o título "# Doomsday-Mind"
-└── icons/
-    ├── icon-120.png   (120×120)  — apple-touch-icon (iPhone @2x legado)
-    ├── icon-152.png   (152×152)  — apple-touch-icon (iPad)
-    ├── icon-167.png   (167×167)  — apple-touch-icon (iPad Pro)
-    ├── icon-180.png   (180×180)  — apple-touch-icon principal (iPhone @3x)
-    ├── icon-192.png   (192×192)  — ícone padrão PWA/Android
-    ├── icon-512.png   (512×512)  — ícone padrão PWA (splash/instalação)
-    └── icon-1024.png  (1024×1024) — ícone grande, marcado como "any maskable" no manifest
+- Aprender o método Ímpar + 11;
+- Entender âncoras de século;
+- Memorizar referências mensais;
+- Calcular o código de qualquer ano;
+- Resolver datas completas;
+- Aumentar a velocidade;
+- Melhorar a precisão;
+- Identificar pontos fracos;
+- Criar consistência diária;
+- Acompanhar progressão;
+- Subir de rank;
+- Revisar erros;
+- Praticar offline;
+- Manter o histórico localmente.
 
+O aplicativo deverá transmitir:
 
-Os ícones são PNGs com a arte do app: um calendário com um cérebro em estilo neon roxo sobre fundo azul-marinho escuro, preenchendo o quadrado de borda a borda (o iOS aplica a própria máscara arredondada).
-
-**Dependências:** nenhuma (não há `package.json`, `node_modules` nem gerenciador de pacotes). Não há framework CSS nem biblioteca JS.
+```text
+Inteligência
+Precisão
+Calma
+Performance
+Disciplina
+Evolução
+```
 
 ---
 
-## 3. index.html — estrutura e componentes
+# 3. Identidade do produto
 
-Documento único com `<head>` configurado para PWA/iOS e um `<body>` composto por: container `.app` → header → 3 painéis `<main>` → footer → banner iOS → `<script src="app.js">`.
+O nome continuará sendo:
 
-### 3.1 `<head>`
+```text
+Doomsday Mind
+```
 
-| Elemento | Função |
+A marca não será alterada apenas porque o método pedagógico principal mudou.
+
+O nome representa o universo de:
+
+- Cálculo mental;
+- Calendário;
+- Método Doomsday;
+- Memorização;
+- Treinamento cognitivo;
+- Performance mental.
+
+O produto deverá parecer:
+
+- Premium;
+- Editorial;
+- Técnico;
+- Elegante;
+- Minimalista;
+- Profissional;
+- Intencional.
+
+Não deverá parecer:
+
+- Sistema administrativo;
+- CRUD;
+- Formulário escolar;
+- Template genérico;
+- Dashboard corporativo;
+- Aplicativo infantil;
+- Interface com excesso de neon;
+- Coleção aleatória de cards.
+
+---
+
+# 4. Estrutura principal da aplicação
+
+A aplicação será organizada em três áreas principais.
+
+## 4.1 Treinar
+
+Área principal do produto.
+
+Responsável por:
+
+- Selecionar o tipo de treino;
+- Selecionar o intervalo;
+- Selecionar o tempo;
+- Gerar perguntas;
+- Registrar respostas;
+- Mostrar correções;
+- Conceder XP;
+- Atualizar streak;
+- Criar sessões;
+- Registrar histórico.
+
+## 4.2 Aprender
+
+Área educacional.
+
+Responsável por explicar:
+
+- O método Doomsday;
+- O Ímpar + 11;
+- O cálculo do código do ano;
+- Âncoras;
+- Referências mensais;
+- Anos bissextos;
+- Datas completas;
+- Atalhos;
+- Estratégias de velocidade;
+- Método alternativo tradicional.
+
+## 4.3 Progresso
+
+Área pessoal de evolução.
+
+Responsável por mostrar:
+
+- XP;
+- Rank;
+- Barra de progresso;
+- Streak de exercícios;
+- Streak diário;
+- Melhor streak;
+- Precisão;
+- Tempo;
+- Histórico;
+- Desempenho por modo;
+- Evolução do usuário.
+
+---
+
+# 5. Método principal: Ímpar + 11
+
+O método Ímpar + 11 será a principal técnica ensinada na V2.
+
+A sequência é:
+
+```text
+1. Pegue os dois últimos dígitos do ano
+2. Se o número for ímpar, some 11
+3. Divida por 2
+4. Se o resultado for ímpar, some 11
+5. Calcule o módulo 7
+6. Transforme em deslocamento
+7. Combine com a âncora do século
+```
+
+Exemplo conceitual para 1969:
+
+```text
+Últimos dois dígitos: 69
+
+69 é ímpar
+69 + 11 = 80
+
+80 ÷ 2 = 40
+
+40 é par
+Não soma 11 novamente
+
+40 mod 7 = 5
+
+Código do ano:
+7 − 5 = 2
+```
+
+Depois o código do ano será combinado com a âncora do século.
+
+O aplicativo deverá mostrar dinamicamente:
+
+- Valor inicial;
+- Se era ímpar ou par;
+- Soma realizada;
+- Divisão;
+- Segunda verificação;
+- Módulo;
+- Resultado final;
+- Âncora;
+- Resultado do Doomsday;
+- Referência mensal;
+- Ajuste da data.
+
+Os valores não poderão ser textos estáticos.
+
+---
+
+# 6. Fonte independente da verdade
+
+O método mental não deverá validar a si mesmo.
+
+A arquitetura terá duas camadas.
+
+## 6.1 Calendar Engine
+
+Será a fonte independente do resultado correto.
+
+Responsável por:
+
+- Calcular o dia real da semana;
+- Validar datas;
+- Tratar anos bissextos;
+- Testar séculos;
+- Validar os limites;
+- Confirmar perguntas geradas.
+
+## 6.2 Odd + 11 Engine
+
+Será a técnica treinada pelo usuário.
+
+Responsável por:
+
+- Executar o Ímpar + 11;
+- Gerar etapas;
+- Produzir explicações;
+- Mostrar valores intermediários;
+- Comparar o resultado com o Calendar Engine.
+
+Fluxo:
+
+```text
+Calendar Engine
+       ↓
+Resposta correta verdadeira
+
+Odd + 11 Engine
+       ↓
+Processo mental explicado
+```
+
+Isso evita que um erro na implementação do método passe despercebido.
+
+---
+
+# 7. Calendário e anos bissextos
+
+A regra de ano bissexto será centralizada.
+
+Um ano será bissexto quando:
+
+```text
+É divisível por 4
+E não é divisível por 100
+A menos que seja divisível por 400
+```
+
+Exemplos:
+
+```text
+2000 → bissexto
+1900 → não bissexto
+2024 → bissexto
+2100 → não bissexto
+```
+
+## Referências mensais em anos comuns
+
+| Mês | Referência |
+|---|---:|
+| Janeiro | 3 |
+| Fevereiro | 28 |
+| Março | 14 |
+| Abril | 4 |
+| Maio | 9 |
+| Junho | 6 |
+| Julho | 11 |
+| Agosto | 8 |
+| Setembro | 5 |
+| Outubro | 10 |
+| Novembro | 7 |
+| Dezembro | 12 |
+
+## Referências em anos bissextos
+
+```text
+Janeiro → 4
+Fevereiro → 29
+```
+
+Essa lógica deverá ser usada de maneira idêntica em:
+
+- Geração;
+- Validação;
+- Explicação;
+- Aprendizado;
+- Testes;
+- Estatísticas;
+- Revisão de erros.
+
+---
+
+# 8. Modos de treinamento
+
+## 8.1 Data completa
+
+Exibe uma data, por exemplo:
+
+```text
+20 de julho de 1969
+```
+
+O usuário deverá encontrar o dia da semana utilizando:
+
+```text
+Ímpar + 11
+      ↓
+Âncora do século
+      ↓
+Doomsday do ano
+      ↓
+Referência mensal
+      ↓
+Ajuste da data
+      ↓
+Resultado final
+```
+
+Esse será o modo principal.
+
+---
+
+## 8.2 Código do ano
+
+Exibe somente o ano:
+
+```text
+1969
+```
+
+O usuário deverá calcular o código do ano pelo Ímpar + 11.
+
+A correção mostrará:
+
+```text
+69
+69 + 11 = 80
+80 ÷ 2 = 40
+40 é par
+40 mod 7 = 5
+7 − 5 = 2
+```
+
+---
+
+## 8.3 Âncora do século
+
+Exibe um século ou um ano e solicita a âncora.
+
+Âncoras principais:
+
+| Século | Dia |
 |---|---|
-| `<meta viewport>` com `viewport-fit=cover` | Permite que o layout ocupe a área do notch/Dynamic Island no iPhone |
-| `<meta name="description">` | Descrição para buscadores |
-| `<link rel="manifest" href="manifest.webmanifest">` | Registro do manifesto PWA |
-| `<meta name="theme-color" content="#0b0e14">` | Cor da UI do navegador |
-| `apple-mobile-web-app-capable` + `mobile-web-app-capable` = `yes` | Modo tela cheia quando instalado |
-| `apple-mobile-web-app-status-bar-style` = `black-translucent` | Barra de status translúcida no iOS |
-| `apple-mobile-web-app-title` = `"Doomsday"` | Nome curto sob o ícone na tela de início |
-| `format-detection` = `telephone=no` | Impede o iOS de transformar números em links de telefone |
-| 5 `<link rel="apple-touch-icon">` (default/120/152/167/180) | Ícones da tela de início do iOS |
-| `<link rel="icon" sizes="192x192">` | Favicon PNG |
-| Google Fonts (preconnect + stylesheet) | Fontes Inter e JetBrains Mono |
-| `<link rel="stylesheet" href="styles.css">` | Folha de estilo única |
+| 1800 | Sexta-feira |
+| 1900 | Quarta-feira |
+| 2000 | Terça-feira |
+| 2100 | Domingo |
 
-### 3.2 Header (`.header`)
-
-- **`.brand`** — logotipo `.logo` (emoji ☠️ em quadrado com gradiente roxo), título `<h1>` "Doomsday **Mind**" (a palavra "Mind" recebe cor de destaque via `<span>`) e tagline `.tagline`.
-- **`.tabs`** — navegação com 3 botões `.tab`, cada um com `data-tab` (`practice`, `learn`, `stats`). O botão ativo recebe a classe `.active`. Controlam qual `<main class="panel">` fica visível.
-
-### 3.3 Painel Praticar (`#panel-practice`)
-
-É o coração do app. Contém 4 seções:
-
-**a) Barra de configuração (`.config-bar`)** — três grupos `.config-group`, cada um com um rótulo `<label>` e um controle segmentado `.seg` de botões `.seg-btn`:
-
-| Controle | ID | Atributo data | Opções |
-|---|---|---|---|
-| Modo de treino | `#mode-seg` | `data-mode` | `full` (Data completa), `century` (Âncora do século), `year` (Doomsday do ano), `month` (Referência do mês) |
-| Intervalo de anos | `#range-seg` | `data-range` | `1900,1999` • `1900,2099` (ativo por padrão) • `2000,2099` • `1800,2199` • `1583,2500` |
-| Cronômetro | `#timer-seg` | `data-timer` | `0` (Livre, padrão) • `120` • `60` • `30` • `15` (segundos) |
-
-**b) Faixa de sessão (`.session-strip`)** — 6 "chips" com estatísticas da sessão atual: `#s-count` (perguntas), `#s-correct` (acertos, chip verde), `#s-wrong` (erros, chip vermelho), `#s-streak` (🔥 sequência, chip âmbar), `#s-acc` (precisão %), `#s-avg` (tempo médio).
-
-**c) Cartão da pergunta (`#question-card`)** —
-- `#q-mode-badge`: selo com o nome do modo atual;
-- `#q-timer` / `#q-timer-value`: cronômetro (crescente no modo livre, regressivo com ⏳ nos modos com limite; ganha classe `.urgent` nos 5s finais);
-- `#q-prompt`: enunciado ("Em que dia da semana caiu…", etc.);
-- `#q-main`: o dado principal em fonte grande (a data, o ano, o século ou o mês);
-- `#q-sub`: linha auxiliar (data por extenso, aviso de ano bissexto, etc.);
-- **`#answers-week`**: 7 botões `.ans`, um por dia da semana, cada um com `data-dow` de 0 (Domingo) a 6 (Sábado) e um `<kbd>` mostrando o atalho de teclado (1–7);
-- **`#answers-num`**: alternativa numérica usada só no modo "Referência do mês" — `<input type="number" id="num-input">` com `inputmode="numeric"` e `pattern="[0-9]*"` (abre o teclado numérico do iOS) + botão `#num-submit` "Responder ↵";
-- `#btn-skip`: botão "Pular (Esc)".
-
-**d) Cartão de feedback (`#feedback`)** — oculto até a resposta; mostra:
-- `#fb-verdict`: veredito (✅ Acertou! / ❌ Errou! / ⏰ Tempo esgotado! / ⏭️ Pergunta pulada);
-- `#fb-meta`: tempo gasto;
-- `#fb-answer`: resposta correta (e a resposta errada dada, quando houver);
-- `<details id="fb-steps" open>` com `#steps-container`: a **correção passo a passo**, gerada dinamicamente pelo JS;
-- `#btn-next`: "Próxima pergunta ↵".
-
-### 3.4 Painel Aprender (`#panel-learn`)
-
-Grade `.learn-grid` com 6 cartões `.card` de conteúdo estático educativo:
-1. O que é o método Doomsday (história e as 3 etapas);
-2. Tabela das âncoras dos séculos (1700–2199) + fórmula em `<code>` + mnemônico;
-3. Doomsday do ano — fórmula a/b/c em bloco `.formula`, exemplo de 1985 e o método alternativo "ímpar + 11";
-4. Tabela das datas-referência dos 12 meses com mnemônicos (usa `rowspan` para agrupar os grupos "meses pares" e "9-às-5 no 7-Eleven");
-5. Exemplo completo resolvido: 20/07/1969 (chegada à Lua) + dica `.tip` sobre anos bissextos;
-6. Tabela de atalhos do teclado.
-
-### 3.5 Painel Estatísticas (`#panel-stats`)
-
-- `.stats-grid` com 6 `.stat-card`: `#g-total`, `#g-acc`, `#g-best-streak`, `#g-avg-time`, `#g-best-time`, `#g-today`;
-- Cartão "Últimas 50 tentativas": `#history-dots` (quadradinhos coloridos) + `.legend` (verde=acerto, vermelho=erro, âmbar=tempo esgotado/pulada);
-- Cartão "Desempenho por modo": tabela `#mode-table` com corpo `#mode-table-body` preenchido pelo JS;
-- Cartão "Evolução da precisão": `<canvas id="progress-chart" width="900" height="220">`;
-- `.danger-zone` com `#btn-reset-stats` ("🗑️ Apagar todo o histórico").
-
-### 3.6 Elementos finais
-
-- `.footer`: créditos do método e nota sobre o calendário gregoriano (a partir de 1583);
-- **`#ios-banner`** (`.ios-install-banner`, inicia com `.hidden`): banner fixo de instalação para iOS com o ícone do app, texto ensinando a usar Compartilhar → "Adicionar à Tela de Início" (inclui um SVG inline do ícone de compartilhar do iOS) e botão de fechar `#ios-banner-close` com `aria-label="Fechar"`.
+O ciclo se repete a cada 400 anos.
 
 ---
 
-## 4. styles.css — layout, tema e responsividade
+## 8.4 Referência mensal
 
-### 4.1 Fundações
+Exibe o mês e solicita a data correspondente.
 
-- **Variáveis CSS** em `:root` (todas as cores do tema — ver seção 5) e `--mono` para a fonte monoespaçada.
-- Reset universal `* { margin:0; padding:0; box-sizing:border-box }` e `color-scheme: dark`.
-- **`body`**: fundo composto por dois `radial-gradient` (brilho roxo no canto superior direito, brilho verde suave à esquerda) sobre `--bg`; `min-height: 100vh` com fallback progressivo para `100dvh`; otimizações mobile: `-webkit-tap-highlight-color: transparent`, `-webkit-text-size-adjust: 100%`, `-webkit-touch-callout: none`, `overscroll-behavior-y: none` (remove o "bounce" de scroll do iOS).
-- Botões e tabs recebem `user-select: none` e `touch-action: manipulation` (elimina o atraso/zoom de duplo toque); inputs mantêm seleção de texto.
-- **`.app`**: container central com `max-width: 1060px` e padding somado a `env(safe-area-inset-*)` nos 4 lados — respeita notch, Dynamic Island e barra home do iPhone.
+Exemplo:
 
-### 4.2 Componentes (resumo dos estilos)
+```text
+Julho
+```
 
-| Componente | Destaques visuais |
-|---|---|
-| `.logo` | 52×52px, raio 14px, gradiente 135° `--accent`→`#4b34b8`, sombra roxa |
-| `.tabs` / `.tab` | pílula com fundo `--card`; ativo = fundo `--accent`, texto branco, sombra |
-| `.config-bar` | cartão flex com wrap, raio 16px |
-| `.seg` / `.seg-btn` | controle segmentado; ativo = fundo `--card2` + anel interno `inset 0 0 0 1px --accent` |
-| `.chip` | pílulas de estatística; variantes `.good`, `.bad`, `.streak` colorem o valor |
-| `.question-card` | gradiente vertical `--card2`→`--card`, raio 20px, sombra profunda, texto centralizado |
-| `.q-mode-badge` | pílula roxa translúcida com borda |
-| `.q-timer` | pílula monoespaçada; `.urgent` = vermelho + animação `pulse` (0,8s, pisca em 55% de opacidade) |
-| `.q-main` | fonte mono, `clamp(34px, 6vw, 56px)`, texto com gradiente branco→lilás via `background-clip: text` |
-| `.ans` | botões de resposta; hover = borda roxa + `translateY(-2px)` + sombra; `.correct` = verde translúcido; `.wrong` = vermelho translúcido; desabilitados não marcados caem para 35% de opacidade |
-| `.ans kbd` | mini-tecla monoespaçada com borda |
-| `#num-input` | 26px mono centralizado (>16px evita o zoom automático do iOS ao focar), `appearance:none` e remoção dos spinners do WebKit; foco = borda roxa + anel de 3px |
-| `.btn` | base; variantes `.primary` (roxo sólido), `.ghost` (transparente), `.big` (largura total), `.danger` (vermelho translúcido) |
-| `.feedback` | cartão com variantes `.ok` (anel/sombra verdes) e `.no` (anel/sombra vermelhos) |
-| `.step` | linha do passo a passo: número em quadrado roxo `.step-num`, corpo `.step-body` com título `.t`, cálculo `.calc` (mono, fundo roxo translúcido) e resultado `.res` (verde); variante `.final` fica toda esverdeada |
-| `.card` | cartão genérico dos painéis Aprender/Estatísticas, com estilos próprios para `table`, `th/td`, `code`, `kbd`, `.tip` (aviso âmbar) e `.formula` (bloco mono roxo) |
-| `.stat-card` / `.stat-value` | valor grande mono em lilás |
-| `.hdot` | quadradinhos 16×16 do histórico (`.ok` verde, `.no` vermelho, `.to` âmbar) |
-| `.ios-install-banner` | `position:fixed` na base + `env(safe-area-inset-bottom)`, fundo `rgba(26,32,48,.97)` com `backdrop-filter: blur(14px)`, borda roxa, animação `bannerUp` (sobe com leve overshoot `cubic-bezier(.2,.9,.3,1.1)`) |
-| `.hidden` | `display: none !important` — classe utilitária usada pelo JS para mostrar/ocultar |
+Resposta:
 
-### 4.3 Animações e transições
+```text
+11
+```
 
-- `@keyframes fadeUp` — painéis e feedback surgem subindo 8px com fade (0,25s);
-- `@keyframes pulse` — cronômetro urgente piscando;
-- `@keyframes bannerUp` — entrada do banner iOS;
-- Transições de 0,13–0,15s em tabs, botões segmentados, respostas e botões gerais (cor, borda, transform, sombra).
-
-### 4.4 Breakpoints e media queries
-
-- **`@media (max-width: 640px)`** (celular): header empilha; tabs ocupam 100% da largura com botões flexíveis; `.q-main` reduz para 30px; **as respostas viram grade de 2 colunas** (`display:grid; grid-template-columns:1fr 1fr`) com o 7º botão (Sábado) ocupando a linha inteira (`grid-column: 1 / -1`); chips, config-bar, cartões e paddings compactados.
-- **`@media (display-mode: standalone)`** (app instalado): desativa o efeito hover dos botões de resposta (que "gruda" em telas de toque) e o substitui por um estado `:active` roxo.
-- `.learn-grid` e `.stats-grid` usam `repeat(auto-fit, minmax(...))` — respondem a qualquer largura sem media query.
+Também poderá incluir exercícios específicos de ano bissexto.
 
 ---
 
-## 5. Paleta visual e tipografia
+## 8.5 Sprint de velocidade
 
-### 5.1 Cores do tema (variáveis em `:root`)
+Modo voltado para rapidez:
 
-| Variável | Valor | Uso |
-|---|---|---|
-| `--bg` | `#0b0e14` | Fundo da página, theme-color, contorno dos pontos do gráfico |
-| `--bg2` | `#10141d` | Fundo de segmentados, botões de resposta, inputs, passos, blocos de código |
-| `--card` | `#151a26` | Cartões, tabs, chips, feedback |
-| `--card2` | `#1a2030` | Botão segmentado ativo, topo do gradiente do cartão de pergunta, botões |
-| `--border` | `#232b3d` | Todas as bordas padrão |
-| `--text` | `#e8ecf4` | Texto principal |
-| `--muted` | `#8b94a7` | Textos secundários, labels, rodapé |
-| `--accent` | `#7c5cff` | Cor primária: tab ativa, botões primários, logo, anéis de foco, pontos do gráfico |
-| `--accent2` | `#9d7bff` | Variante clara: destaques de texto, valores de estatística, linha do gráfico, hover |
-| `--good` | `#2dd4a0` | Verde de acerto: chip, botão correto, feedback ok, dots, resultados |
-| `--bad` | `#ff5c7a` | Vermelho de erro: chip, botão errado, feedback no, timer urgente, zona de perigo |
-| `--warn` | `#ffb020` | Âmbar: chip de sequência 🔥, dots de timeout/pulada, caixa `.tip` |
-
-### 5.2 Cores literais (fora das variáveis)
-
-| Valor | Onde aparece |
-|---|---|
-| `#4b34b8` | Ponta escura do gradiente do logo |
-| `#b9a8ff` e `#fff` | Gradiente de texto do `.q-main`; texto de botões ativos/primários |
-| `#c6cddb` | Parágrafos dos cartões Aprender e texto do banner iOS |
-| `#2f9bff` | Azul do ícone "Compartilhar" no banner iOS (imita a cor do iOS) |
-| `rgba(26,32,48,.97)` | Fundo do banner iOS |
-| `rgba(124,92,255, .08–.4)` | Famílias de translúcidos roxos (badges, calc, sombras, anéis) |
-| `rgba(45,212,160, .06–.5)` | Translúcidos verdes (acertos, passo final, feedback ok) |
-| `rgba(255,92,122, .07–.5)` | Translúcidos vermelhos (erros, botão danger, feedback no) |
-| `rgba(255,176,32, .07/.25)` | Translúcidos âmbar (caixa `.tip`) |
-| `rgba(0,0,0, .35/.55)` | Sombras do cartão de pergunta e do banner |
-| No canvas (JS): `rgba(255,255,255,.07)` grade; `rgba(139,148,167,.8/.9)` rótulos; `#9d7bff` linha; `#7c5cff` pontos; gradiente de área `rgba(124,92,255,.35)→0` | Gráfico de evolução |
-
-### 5.3 Tipografia
-
-| Fonte | Pesos carregados | Uso |
-|---|---|---|
-| **Inter** (Google Fonts) | 400, 500, 600, 700, 800 | Fonte padrão de toda a UI (fallback: `system-ui, sans-serif`) |
-| **JetBrains Mono** (Google Fonts) | 500, 700 | Números e dados: pergunta principal, cronômetro, chips, cálculos, `<code>`, `<kbd>`, estatísticas, input numérico |
-
-Hierarquia: `q-main` clamp 34–56px • h1 24px/800 • verdict 22px/800 • stat-value 26px • input 26px • h2 18px • corpo 14–15px • labels 11–12px maiúsculas com letter-spacing.
+- Perguntas rápidas;
+- Cronômetro;
+- Pontuação;
+- Bônus por velocidade;
+- Sequência de acertos;
+- Sessões com tempo definido.
 
 ---
 
-## 6. app.js — lógica, estados e eventos
+# 9. Arquitetura preparada para novos modos
 
-Arquivo único em modo estrito (`"use strict"`), organizado em blocos comentados.
+A estrutura deverá aceitar novos modos sem reescrever o núcleo.
 
-### 6.1 Constantes
+Futuros modos possíveis:
 
-- `WEEKDAYS` / `WEEKDAYS_SHORT` — nomes dos dias (índice 0 = Domingo, convenção usada no app inteiro);
-- `MONTHS` — meses em minúsculas;
-- `MODE_NAMES` — mapa `full/century/year/month` → rótulos em português;
-- `STORAGE_KEY = "doomsday-mind-v1"` — chave do localStorage.
+```text
+Desafio diário
+Modo reverso
+Sequência infinita
+Revisão de erros
+Modo sem erros
+Contra o relógio
+Sessão personalizada
+Treino de anos bissextos
+Treino por século
+Treino por mês
+Modo relâmpago
+Modo sobrevivência
+```
 
-### 6.2 Matemática do calendário (o "motor" do app)
+Cada modo terá um identificador:
 
-| Função | O que faz |
-|---|---|
-| `isLeap(y)` | Regra gregoriana completa: divisível por 4, exceto múltiplos de 100 que não sejam de 400 |
-| `mod(n, m)` | Módulo sempre positivo (o `%` nativo falha com negativos) |
-| `centuryAnchor(year)` | Âncora do século: `(5 × (século mod 4) + 2) mod 7` |
-| `yearDoomsdayParts(year)` | Método clássico de Conway: `y` = 2 últimos dígitos, `a=⌊y/12⌋`, `b=y mod 12`, `c=⌊b/4⌋`, doomsday = `(âncora+a+b+c) mod 7`. Retorna todas as parcelas (usadas na correção passo a passo) |
-| `odd11Parts(year)` | Método alternativo "ímpar+11"; retorna o deslocamento **e** a lista textual de passos em português para exibição |
-| `monthDoomsdayDay(month, leap)` | Tabela das datas-referência: `[3/4, 28/29, 14, 4, 9, 6, 11, 8, 5, 10, 7, 12]` (janeiro/fevereiro variam com bissexto) |
-| `monthMnemonic(month, leap)` | Frase mnemônica de cada mês (ex.: "Dia do Pi", "Trabalho das 9 às 5 no 7-Eleven") |
-| `weekdayOf(d, m, y)` | **Fonte da verdade** do app: `(doomsdayDoAno + (dia − referênciaDoMês)) mod 7` — o gabarito é calculado pelo próprio método Doomsday |
-| `daysInMonth(m, y)` | Dias de cada mês, considerando bissexto |
-| Utilitários | `pad2`, `fmtDate` (dd/mm/aaaa), `fmtTime` (segundos com 1 decimal em pt-BR), `randInt` (inteiro aleatório inclusivo) |
-
-### 6.3 Estado
-
-Objeto global `state`:
-
-
-mode ("full")  range ([1900,2099])  timerLimit (0 = livre)
-question (pergunta atual)  answered (bool)  startTime (performance.now)
-timerInterval (id do setInterval)
-session: { count, correct, wrong, streak, times[] }
-
-
-E o objeto persistente `store` (ver seção 8). O estado da **sessão** zera ao recarregar a página; o `store` sobrevive.
-
-### 6.4 Ciclo da pergunta
-
-1. **`newQuestion()`** — gera a pergunta conforme o modo:
-   - `full`: ano aleatório no intervalo + mês 1–12 + dia válido (`daysInMonth`); resposta = `weekdayOf(...)`; tipo `week`;
-   - `century`: século aleatório entre `max(intervalo, 1500)/100` e `intervalo_max/100`; resposta = `centuryAnchor`; tipo `week`;
-   - `year`: ano aleatório; resposta = `yearDoomsday`; subtítulo avisa "⚠️ ano bissexto" quando aplicável; tipo `week`;
-   - `month`: mês aleatório + sorteio 50% de contexto bissexto; resposta = `monthDoomsdayDay`; tipo **`num`** (resposta numérica). Para março–dezembro o subtítulo diz "(vale para qualquer ano)".
-   Depois chama `renderQuestion()` e `startTimer()`.
-2. **`renderQuestion()`** — preenche badge, enunciado, dado principal e subtítulo; reabilita/limpa os 7 botões; alterna entre `#answers-week` e `#answers-num` conforme o tipo (com foco automático no input após 50ms); esconde o feedback.
-3. **Timer** — `startTimer()` grava `performance.now()` e liga um `setInterval` de 100ms; `updateTimerDisplay()` mostra tempo crescente (livre) ou restante com "⏳" (limitado); nos 5s finais aplica `.urgent`; ao chegar a 0 dispara `handleTimeout()`.
-4. **Resposta** — três desfechos, todos parando o timer e chamando `recordAttempt` + `showFeedback`:
-   - `submitAnswer(given)` — clique/tecla; compara com `q.answer`;
-   - `handleTimeout()` — tempo esgotado (conta como erro, `timedOut: true`);
-   - `handleSkip()` — pulada (conta como erro; no feedback aparece "⏭️ Pergunta pulada", mas é gravada com `timedOut: true` — ver seção 11).
-5. **`recordAttempt({correct, timedOut, elapsed})`** — atualiza a sessão (acerto incrementa streak e guarda o tempo; erro zera streak), atualiza `store.bestStreak` se a sequência atual superar o recorde, adiciona a tentativa ao `store.attempts` (`{ts, mode, correct, timedOut, ms}`), salva e re-renderiza a faixa de sessão.
-6. **`showFeedback(...)`** — pinta o botão correto de verde e o errado de vermelho (desabilitando todos), aplica a classe `.ok`/`.no` no cartão, escreve veredito/tempo/resposta, injeta `buildSteps(q)` no `#steps-container` e move o foco para `#btn-next`.
-
-### 6.5 Correção passo a passo (`buildSteps` + `stepHtml`)
-
-Gera HTML dinâmico específico para **cada pergunta**:
-
-- **Modo século (2 passos):** fórmula da âncora com os números substituídos + resultado com a lista de repetição de 400 anos;
-- **Modo mês (2 passos):** mnemônico do mês (com contexto bissexto quando janeiro/fevereiro) + resultado;
-- **Modos ano e data completa:** passo 1 = âncora do século com cálculo; passo 2 = doomsday do ano pelo método a+b+c **e**, em letra menor, a conferência pelo método "ímpar+11"; no modo `full` seguem: passo 3 = data-referência do mês (com verificação explícita "É/NÃO é bissexto" para jan/fev), passo 4 = ajuste de dias (`diferença mod 7`, com direção "antes/depois" e soma em dias abreviados) e passo 5 = resultado final.
-
-O último passo sempre recebe a variante visual `.final` (verde).
-
-### 6.6 Estatísticas e gráfico
-
-- `renderSessionStrip()` — atualiza os 6 chips da sessão (precisão arredondada; tempo médio só dos acertos);
-- `renderStats()` — chamada ao abrir a aba Estatísticas: totais, precisão geral, melhor sequência, tempo médio e recorde de velocidade (apenas acertos), tentativas de hoje (compara `ts` com a meia-noite local); desenha os dots das últimas 50 tentativas (cada um com `title` descritivo); monta a tabela por modo; chama o gráfico. Com histórico vazio, mostra "Nenhuma tentativa ainda — vá praticar! 🎯";
-- `drawProgressChart()` — Canvas 2D puro: agrupa as tentativas em blocos de 10 (ignora blocos com menos de 3), desenha grade horizontal (0–100% de 25 em 25), área preenchida com gradiente roxo, linha de 2,5px e pontos com contorno da cor do fundo. Sem dados suficientes, exibe uma mensagem no próprio canvas.
-
-### 6.7 Eventos (mapa completo)
-
-| Evento | Alvo | Ação |
-|---|---|---|
-| `click` | cada `.tab` | Troca painel ativo; se for "stats", chama `renderStats()` |
-| `click` | `.seg-btn` de `#mode-seg`/`#range-seg`/`#timer-seg` (via `bindSeg`) | Atualiza `state` e gera nova pergunta imediatamente |
-| `click` | 7 botões `.ans` | `submitAnswer(data-dow)` |
-| `click` | `#num-submit` | Envia o valor do input (se for número) |
-| `keydown Enter` | `#num-input` | Idem |
-| `click` | `#btn-skip` / `#btn-next` | Pular / próxima pergunta |
-| `click` | `#btn-reset-stats` | `confirm()` nativo → zera o `store` e re-renderiza |
-| `keydown` global | `document` | Só age com o painel Praticar ativo: **Enter** avança (após responder); **Esc** pula; **1–7** responde dia da semana (ignorado se o foco está no input numérico) |
-| `click` | `#ios-banner-close` | Esconde o banner e grava a dispensa no localStorage |
-| `load` | `window` | Registra o Service Worker |
-
-### 6.8 Autoverificação (`selfTest`, IIFE)
-
-Roda a cada carregamento: valida 6 datas históricas conhecidas (20/07/1969 = domingo, 07/09/1822 = sábado, 15/11/1889 = sexta, etc.) e compara o algoritmo com o `Date` UTC do JavaScript em **500 datas aleatórias** entre 1583 e 2500. Divergências são reportadas via `console.error` — não há efeito visível para o usuário.
-
-### 6.9 Bloco PWA (`pwa`, IIFE)
-
-- Registra `sw.js` no evento `load` (com `console.warn` em caso de falha);
-- Detecta iOS por `userAgent` (`iphone|ipad|ipod`) **ou** iPadOS moderno (`MacIntel` + `maxTouchPoints > 1`);
-- Detecta modo instalado por `display-mode: standalone` (matchMedia) **ou** `navigator.standalone` (Safari);
-- Mostra `#ios-banner` após 1,5s **somente se**: é iOS + não está instalado + não foi dispensado antes (`dm-ios-banner-dismissed` no localStorage).
-
-### 6.10 Inicialização
-
-Última linha do arquivo: `renderSessionStrip()` + `newQuestion()` — o app abre com uma pergunta pronta no modo "Data completa", intervalo 1900–2099, timer livre.
+```javascript
+full-date
+year-code
+century-anchor
+month-reference
+speed-sprint
+daily-challenge
+error-review
+reverse-mode
+```
 
 ---
 
-## 7. PWA — manifest, Service Worker e instalação
+# 10. Configurações
 
-### 7.1 manifest.webmanifest
+O usuário poderá configurar:
 
-| Campo | Valor |
-|---|---|
-| `name` / `short_name` | "Doomsday Mind" / "Doomsday" |
-| `description` / `lang` | Descrição em português / `pt-BR` |
-| `start_url` / `scope` | `./index.html` / `./` (caminhos relativos — funciona em subdiretórios, ex.: GitHub Pages) |
-| `display` | `standalone` (tela cheia, sem UI do navegador) |
-| `orientation` | `portrait` |
-| `background_color` / `theme_color` | `#0b0e14` (ambos) |
-| `categories` | education, games, productivity |
-| `icons` | 7 entradas: 120/152/167/180 (sem purpose), 192 e 512 (`purpose: any`), 1024 (`purpose: any maskable`) |
+## Intervalos
 
-### 7.2 sw.js — Service Worker
+```text
+1583–2500
+1800–2199
+1900–1999
+1900–2099
+2000–2099
+```
 
-- **Versionamento:** constante `VERSION = "v1.0.0"` compõe os nomes dos caches `doomsday-static-v1.0.0` e `doomsday-runtime-v1.0.0`. Mudar a versão invalida os caches antigos.
-- **`install`:** pré-cacheia o app shell completo (12 URLs: `./`, index, css, js, manifest e 6 ícones — o icon-1024 **não** é pré-cacheado) e chama `skipWaiting()`.
-- **`activate`:** apaga qualquer cache cujo nome não seja um dos dois atuais e chama `clients.claim()`.
-- **`fetch`** — três estratégias, apenas para requisições GET:
-  1. **Navegações** (`request.mode === "navigate"`): *network-first* — tenta a rede, atualiza a cópia de `./index.html` no cache e, se offline, devolve o cache (fallback final para `./index.html`);
-  2. **Google Fonts** (`fonts.googleapis.com` / `fonts.gstatic.com`): *stale-while-revalidate* no cache de runtime — serve o cache imediatamente e atualiza em segundo plano (aceita respostas `opaque` de CORS);
-  3. **Demais assets do próprio domínio:** *cache-first* com atualização em background.
-- **`message`:** ouve `"SKIP_WAITING"` para ativação manual de nova versão (hook disponível, porém nenhum código do app envia essa mensagem — ver seção 11).
+## Tempo
 
-### 7.3 Instalação e offline
+```text
+Livre
+2 minutos
+60 segundos
+30 segundos
+15 segundos
+```
 
-- **iOS:** não há prompt automático; o caminho é Safari → Compartilhar → "Adicionar à Tela de Início" — exatamente o que o banner `#ios-banner` ensina. Instalado, o app abre em tela cheia com barra de status translúcida e o nome "Doomsday".
-- **Offline:** após a primeira visita, todo o app funciona sem rede (o único recurso externo — fontes — tem fallback de sistema e cache de runtime).
-- **Requisito:** Service Workers só funcionam em **HTTPS** (ou localhost). Nenhuma configuração de deploy/hospedagem foi **identificada no código**.
+## Futuras configurações
 
----
-
-## 8. Dados, armazenamento e APIs
-
-### 8.1 localStorage (único armazenamento)
-
-| Chave | Conteúdo |
-|---|---|
-| `doomsday-mind-v1` | JSON: `{ attempts: [{ts, mode, correct, timedOut, ms}...], bestStreak }`. Limitado às **últimas 2000 tentativas** (corte em `saveStore`). Leitura e escrita protegidas por `try/catch` (modo privado/quota não quebram o app) |
-| `dm-ios-banner-dismissed` | `"1"` quando o usuário fecha o banner de instalação iOS |
-
-### 8.2 APIs do navegador utilizadas
-
-`localStorage`, `serviceWorker` + Cache Storage API, Canvas 2D, `performance.now()`, `matchMedia`, `Intl` via `toLocaleString("pt-BR")`, `confirm()` nativo.
-
-### 8.3 O que **não** existe
-
-IndexedDB, cookies, backend, banco de dados, autenticação/login, chamadas a APIs externas (`fetch`/XHR de dados), analytics, senhas/tokens/chaves: **não identificados no código**. A única requisição externa é o CSS/arquivos do Google Fonts.
+- Dificuldade;
+- Quantidade de perguntas;
+- Tamanho da sessão;
+- Mostrar ou esconder dicas;
+- Permitir repetição;
+- Incluir ou excluir anos bissextos;
+- Treinar somente datas históricas;
+- Treinar somente um século;
+- Responder digitando;
+- Responder por opções.
 
 ---
 
-## 9. Como HTML, CSS e JS se conectam — fluxos de execução
+# 11. Ciclo de uma pergunta
 
-### 9.1 O contrato entre as camadas
-
-- O **HTML** define a estrutura estática e "ganchos": ~44 IDs (consumidos pelo JS via helper `$`) e atributos `data-*` (`data-tab`, `data-mode`, `data-range`, `data-timer`, `data-dow`) que carregam os valores de configuração;
-- O **CSS** define aparência e **estados por classe**: o JS nunca escreve estilos inline (exceto textos internos dos passos) — ele apenas alterna classes (`.active`, `.hidden`, `.ok`, `.no`, `.correct`, `.wrong`, `.urgent`) e o CSS reage, inclusive com animações;
-- O **JS** lê os `data-*`, calcula, gera HTML dinâmico (passos da correção, dots, tabela de modos) e alterna as classes.
-
-### 9.2 Fluxo principal — responder uma pergunta
-
-
-Carregamento → selfTest() → renderSessionStrip() → newQuestion()
-   ↓
-newQuestion(): sorteia pergunta conforme state.mode/state.range
-   → calcula o gabarito com o próprio método Doomsday (weekdayOf etc.)
-   → renderQuestion() monta o cartão → startTimer()
-   ↓
-Usuário responde (clique, teclas 1–7, Enter no input) / pula (Esc) / tempo esgota
-   ↓
-submitAnswer | handleSkip | handleTimeout
-   → stopTimer() → recordAttempt() [sessão + localStorage]
-   → showFeedback() → buildSteps() injeta a correção passo a passo
-   ↓
-Enter ou "Próxima pergunta" → newQuestion() (recomeça o ciclo)
-
-
-### 9.3 Fluxos secundários
-
-- **Trocar configuração:** clique em `.seg-btn` → `bindSeg` atualiza `state` → nova pergunta imediata (a atual é descartada sem registro);
-- **Abrir Estatísticas:** clique na tab → troca de painel → `renderStats()` recalcula tudo a partir do `store` e redesenha o canvas;
-- **Primeira visita no iPhone:** load → registra SW (pré-cache) → IIFE `pwa` detecta iOS/Safari → banner sobe após 1,5s → usuário instala ou dispensa;
-- **Visita offline:** navegação → SW intercepta → falha de rede → serve `index.html` e assets do cache.
-
----
-
-## 10. Responsividade e acessibilidade
-
-### 10.1 Responsividade
-
-- **Desktop (>640px):** container até 1060px; respostas em linha flexível; grades auto-ajustáveis nos painéis Aprender/Estatísticas;
-- **Celular (≤640px):** header empilhado, tabs em largura total, respostas em grade 2×4 com alvos grandes, tipografia e espaçamentos reduzidos;
-- **Tablet:** atendido pelas grades `auto-fit` e pelo layout fluido (não há breakpoint específico de tablet);
-- **iPhone com notch:** `viewport-fit=cover` + `env(safe-area-inset-*)` no container e no banner;
-- Unidades fluidas: `clamp()` no título da pergunta, `100dvh`, canvas com `width:100%` via CSS.
-
-### 10.2 Acessibilidade — o que existe
-
-- HTML semântico: `<header>`, `<main>`, `<nav>`, `<footer>`, `<article>`, `<section>`, `<table>` com `<thead>/<tbody>`, `<details>/<summary>`, `<label>`, `<kbd>`;
-- **Teclado:** todo o fluxo de prática é operável sem mouse (1–7, Enter, Esc); foco é movido programaticamente para o input numérico e para "Próxima pergunta";
-- `aria-label="Fechar"` no botão do banner iOS; `alt=""` no ícone decorativo do banner; `title` descritivo nos dots do histórico; anéis de foco visíveis no input;
-- Contraste: texto claro `#e8ecf4` sobre fundos escuros tem contraste alto; acerto/erro não dependem só de cor (há ✅/❌, texto e posição).
-
-### 10.3 Acessibilidade — lacunas (confirmadas no código)
-
-- Tabs e painéis **sem ARIA** (`role="tablist/tab/tabpanel"`, `aria-selected`, `aria-controls` não existem);
-- Feedback e cronômetro sem `aria-live` — leitores de tela não são notificados do resultado nem do tempo;
-- O canvas do gráfico não tem texto alternativo/fallback acessível;
-- Os dots do histórico dependem de `title` (inacessível por toque) e de cor + tooltip;
-- `user-select: none` global em botões e `-webkit-touch-callout: none` limitam seleção/cópia;
-- Textos em `--muted` (#8b94a7) sobre `--card` têm contraste menor que o texto principal (adequado para texto secundário, mas limítrofe para AA em tamanhos pequenos).
+```text
+Configuração selecionada
+        ↓
+Gerar pergunta aleatória
+        ↓
+Calcular resposta verdadeira
+        ↓
+Preparar resolução Ímpar + 11
+        ↓
+Exibir pergunta
+        ↓
+Iniciar cronômetro
+        ↓
+Usuário responde
+        ↓
+Validar resposta
+        ↓
+Classificar status
+        ↓
+Atualizar sessão
+        ↓
+Atualizar XP
+        ↓
+Atualizar streak
+        ↓
+Atualizar streak diário
+        ↓
+Salvar histórico
+        ↓
+Mostrar correção
+        ↓
+Mostrar resolução
+        ↓
+Oferecer próxima pergunta
+```
 
 ---
 
-## 11. Problemas, inconsistências e código não utilizado
+# 12. Estados de uma tentativa
 
-Levantamento honesto do estado atual:
+A V2 deverá diferenciar claramente:
 
-1. **README.md vazio** — contém apenas `# Doomsday-Mind`; não documenta instalação, uso ou arquitetura (esta documentação supre isso).
-2. **Hook `SKIP_WAITING` órfão** — `sw.js` ouve a mensagem `"SKIP_WAITING"`, mas nenhum código em `app.js` a envia; não há UI de "nova versão disponível". Atualizações dependem do ciclo natural do SW (skipWaiting no install + revisitas).
-3. **Pulada gravada como timeout** — `handleSkip` registra `timedOut: true`; no histórico persistente é impossível distinguir "pulou" de "tempo esgotado" (a legenda das estatísticas já os trata como uma categoria única, mas o veredito do feedback os distingue — inconsistência de granularidade).
-4. **Ícone 1024 "maskable" sem zona segura formal** — a arte preenche o quadrado (o que funciona), mas não foi desenhada com a zona segura de 40% exigida pela especificação maskable; em launchers Android com máscaras agressivas, bordas da arte podem ser cortadas. Também é o único ícone **fora** do pré-cache do SW.
-5. **`apple-mobile-web-app-capable` é depreciado** — mantido junto do padrão `mobile-web-app-capable` (prática recomendada de compatibilidade; não é bug, mas gera aviso em auditorias).
-6. **IDs sem uso no JS** — `#mode-table`, `#fb-header`, `#fb-steps` e `#question-card`… na verdade `#question-card` é usado (remove `.hidden`), mas **nunca recebe** `.hidden` de volta — a chamada é inócua no fluxo atual; os outros três IDs não são referenciados por script (apenas estrutura/estilo).
-7. **Métricas enviesadas por design** — "tempo médio" (sessão e global) considera **apenas acertos**; a precisão conta pulos como erro. São decisões coerentes, mas não estão explicadas na UI.
-8. **`selfTest` roda em produção** — 500 comparações + 6 datas a cada carregamento; custo desprezível, mas é código de verificação que poderia ser condicionado a um flag de debug.
-9. **Canvas sem suporte a DPI alto** — o gráfico usa buffer fixo de 900×220 esticado via CSS; em telas Retina a linha fica levemente borrada (não há ajuste por `devicePixelRatio`).
-10. **Timer de 100ms segue rodando com a aba oculta** — sem uso da Page Visibility API; em modo com limite, o tempo continua contando se o usuário trocar de aba (comportamento discutível, não necessariamente errado).
-11. **Google Fonts na primeira carga** — sem rede na primeiríssima visita, os textos caem no fallback de sistema (funcional; apenas estética).
-12. **Referências quebradas:** nenhuma encontrada — todos os arquivos referenciados (CSS, JS, SW, manifest, 7 ícones) existem e respondem; todos os IDs consumidos pelo JS existem no HTML.
-13. **Deploy/HTTPS:** nenhuma configuração de hospedagem foi identificada no código; o SW exigirá HTTPS em produção.
+```text
+correct
+wrong
+skipped
+timedOut
+```
+
+## Correct
+
+O usuário respondeu corretamente.
+
+Efeitos:
+
+- Ganha XP;
+- Aumenta streak;
+- Conta como prática;
+- Pode gerar bônus;
+- Pode gerar recorde.
+
+## Wrong
+
+O usuário respondeu, mas errou.
+
+Efeitos:
+
+- Não ganha XP;
+- Streak de exercícios volta a zero;
+- Conta no histórico;
+- Continua contando como prática do dia.
+
+## Skipped
+
+O usuário pulou a pergunta.
+
+Efeitos:
+
+- Não ganha XP;
+- Streak volta a zero;
+- Registro diferenciado;
+- Não deve ser confundido com timeout.
+
+## TimedOut
+
+O tempo terminou antes da resposta.
+
+Efeitos:
+
+- Não ganha XP;
+- Streak volta a zero;
+- Mostra feedback de tempo esgotado;
+- Registro diferenciado no histórico.
 
 ---
 
-## 12. Resumo geral
+# 13. Correção passo a passo
 
-**Arquitetura.** SPA estática de 3 painéis controlada por troca de classes, escrita em HTML + CSS + JavaScript puros, sem dependências nem build. Separação limpa: HTML fornece estrutura e ganchos (`id`/`data-*`), CSS governa aparência e estados por classe, JS concentra toda a lógica em um arquivo com módulos conceituais (matemática do calendário → estado → ciclo da pergunta → correção → estatísticas → PWA). O gabarito das perguntas é calculado pelo próprio método Doomsday e validado automaticamente contra o `Date` do navegador a cada carga.
+O feedback deverá funcionar como um professor particular.
 
-**Funcionalidades.** Quatro modos de treino (data completa, âncora do século, doomsday do ano, referência do mês — este com resposta numérica e sorteio de contexto bissexto); cinco intervalos de anos (até 1583–2500); cronômetro livre ou regressivo (15s–2min) com alerta visual e derrota por tempo; respostas por toque **ou** teclado (1–7, Enter, Esc); **correção passo a passo gerada dinamicamente para cada pergunta**, incluindo dois métodos de cálculo do doomsday do ano; estatísticas de sessão em tempo real e histórico persistente com precisão, sequências, tempos, dots das últimas 50 tentativas, tabela por modo e gráfico de evolução em canvas; aba educativa completa; reset de histórico com confirmação.
+## Em caso de acerto
 
-**Identidade visual.** Tema escuro azul-marinho (#0b0e14/#151a26) com acento roxo-violeta (#7c5cff/#9d7bff) e semântica de cores consistente (verde #2dd4a0 = acerto, vermelho #ff5c7a = erro, âmbar #ffb020 = tempo/sequência); tipografia Inter para UI e JetBrains Mono para dados; gradientes suaves, cantos arredondados generosos, sombras profundas e microanimações de 0,13–0,4s.
+Mostrar:
 
-**Tecnologias.** HTML5 semântico, CSS3 (custom properties, grid/flex, `clamp`, `env(safe-area-inset)`, `backdrop-filter`, media queries incluindo `display-mode`), JS vanilla (Canvas 2D, `performance.now`, `localStorage`, `matchMedia`), Service Worker com Cache Storage, Web App Manifest. Única dependência externa: Google Fonts (com fallback).
+```text
+Correto
 
-**PWA.** Manifesto completo (standalone, portrait, 7 ícones), Service Worker com pré-cache do app shell e três estratégias de cache (network-first para navegação, stale-while-revalidate para fontes, cache-first para assets), funcionamento 100% offline após a primeira visita, meta tags iOS completas, ícones apple-touch em 4 tamanhos, safe areas do iPhone respeitadas e banner próprio de instalação exclusivo para Safari/iOS com memória de dispensa.
+Sua resposta: sexta-feira
+Resposta correta: sexta-feira
+Tempo: 8,4 segundos
++12 XP
+Streak 4
+```
 
-**Fluxos principais.** (1) gerar pergunta → cronometrar → responder/pular/estourar → registrar → corrigir passo a passo → próxima; (2) configurar modo/intervalo/timer → pergunta nova imediata; (3) abrir estatísticas → recalcular e redesenhar tudo do localStorage; (4) primeira visita iOS → registrar SW → banner de instalação → app na tela de início.
+Depois mostrar a resolução:
 
-**Estado atual.** Funcional e completo para o propósito: sem referências quebradas, sem erros de sintaxe, matemática validada, offline operante. Pendências conhecidas: README mínimo, lacunas de ARIA/`aria-live`, hook de atualização do SW sem UI, distinção pulo×timeout perdida no histórico, gráfico sem ajuste de DPI e ausência de configuração de deploy HTTPS (necessária para o SW em produção).
+```text
+Últimos dígitos: 69
+69 é ímpar → 69 + 11 = 80
+80 ÷ 2 = 40
+40 é par → mantém 40
+40 mod 7 = 5
+7 − 5 = 2
+
+Âncora de 1900:
+quarta-feira
+
+Doomsday do ano:
+sexta-feira
+```
+
+## Em caso de erro
+
+Mostrar:
+
+```text
+Não foi desta vez
+
+Sua resposta: domingo
+Resposta correta: sexta-feira
+Tempo: 12,8 segundos
+XP recebido: 0
+```
+
+Depois explicar:
+
+```text
+A sequência correta era:
+
+69
+69 + 11 = 80
+80 ÷ 2 = 40
+40 é par
+40 mod 7 = 5
+```
+
+Quando possível, o sistema deverá identificar a etapa provável de divergência:
+
+```text
+Você parece ter se confundido na segunda verificação de paridade.
+```
+
+## Em caso de timeout
+
+Mostrar:
+
+```text
+Tempo esgotado
+
+A resposta não foi enviada dentro do limite.
+Resposta correta: sexta-feira.
+```
+
+## Em caso de pulo
+
+Mostrar:
+
+```text
+Pergunta pulada
+
+Esta tentativa não recebeu XP.
+```
 
 ---
 
-*Documentação baseada exclusivamente nos arquivos: `index.html` (286 linhas), `styles.css` (341), `app.js` (666), `sw.js` (111), `manifest.webmanifest` (22), `README.md` e `icons/` (7 PNGs).*
+# 14. Sistema de respostas
 
+Para respostas de dia da semana:
 
+```text
+1 → Domingo
+2 → Segunda-feira
+3 → Terça-feira
+4 → Quarta-feira
+5 → Quinta-feira
+6 → Sexta-feira
+7 → Sábado
+```
+
+Atalhos:
+
+```text
+Enter → próxima pergunta após a correção
+Esc → pular
+1–7 → responder
+```
+
+Para referências mensais:
+
+- Campo numérico;
+- Teclado numérico no mobile;
+- Validação entre 1 e 31;
+- Mensagem para entrada inválida.
+
+---
+
+# 15. XP
+
+O XP será centralizado no módulo de progressão.
+
+Regras principais:
+
+- Acerto concede XP;
+- Erro concede 0 XP;
+- Pulo concede 0 XP;
+- Timeout concede 0 XP;
+- Streak aumenta o ganho;
+- Milestones podem conceder bônus;
+- XP acumulado nunca diminui.
+
+Exemplo de fórmula:
+
+```text
+XP base = 10
+Bônus de streak = função da sequência
+Bônus especial = função dos milestones
+
+XP final =
+XP base
++
+bônus de streak
++
+bônus especial
+```
+
+Milestones planejados:
+
+```text
+10 acertos
+25 acertos
+50 acertos
+100 acertos
+```
+
+A regra ficará em um único módulo, evitando valores espalhados pelo código.
+
+---
+
+# 16. Streak de exercícios
+
+Representa a sequência consecutiva de acertos.
+
+Exemplo:
+
+```text
+Acerto → 1
+Acerto → 2
+Acerto → 3
+Erro → 0
+```
+
+Deverá existir:
+
+- Streak atual;
+- Melhor streak;
+- Streak da sessão;
+- Streak salvo.
+
+---
+
+# 17. Streak diário
+
+Representa dias consecutivos em que o usuário praticou.
+
+Regras:
+
+```text
+Praticou hoje → registra hoje
+Praticou ontem e hoje → aumenta
+Ficou um dia sem praticar → reinicia
+Errou exercícios → não destrói o streak diário
+```
+
+Dados salvos:
+
+```javascript
+lastPracticeDate
+currentDailyStreak
+bestDailyStreak
+```
+
+Exemplo:
+
+```text
+Segunda ✅
+Terça ✅
+Quarta ✅
+Quinta sem prática
+Sexta ✅
+```
+
+Resultado:
+
+```text
+Streak atual: 1
+Maior streak: 3
+```
+
+---
+
+# 18. Ranks
+
+Os ranks serão derivados do XP.
+
+O rank não será armazenado como fonte independente.
+
+Lista:
+
+```text
+Bronze I
+Bronze II
+Bronze III
+
+Prata I
+Prata II
+Prata III
+
+Ouro I
+Ouro II
+Ouro III
+
+Diamante I
+Diamante II
+Diamante III
+
+Elite
+Lenda
+Surreal
+```
+
+A lista possui 15 nomes, apesar de a descrição original mencionar 14 ranks.
+
+## Curva planejada
+
+| Rank | XP acumulado |
+|---|---:|
+| Bronze I | 0 |
+| Bronze II | 100 |
+| Bronze III | 250 |
+| Prata I | 450 |
+| Prata II | 700 |
+| Prata III | 1.000 |
+| Ouro I | 1.400 |
+| Ouro II | 1.900 |
+| Ouro III | 2.500 |
+| Diamante I | 3.300 |
+| Diamante II | 4.300 |
+| Diamante III | 5.500 |
+| Elite | 7.000 |
+| Lenda | 9.000 |
+| Surreal | 12.000 |
+
+Ao atingir Surreal:
+
+```text
+Rank máximo alcançado
+```
+
+Não deverá aparecer uma barra tentando avançar para um nível inexistente.
+
+---
+
+# 19. Tela de progresso
+
+A tela deverá mostrar:
+
+```text
+RANK ATUAL
+OURO II
+
+✦ 2.430 XP
+
+██████████████░░░░░░
+
+570 XP para Ouro III
+
+🔥 Streak de exercícios
+📅 Streak diário
+🏆 Recorde diário
+```
+
+Também mostrará:
+
+- XP total;
+- XP para o próximo rank;
+- Barra de progresso;
+- Melhor streak;
+- Precisão;
+- Tempo médio;
+- Tentativas.
+
+---
+
+# 20. Estatísticas
+
+A área de progresso deverá apresentar:
+
+- Total de tentativas;
+- Total de acertos;
+- Total de erros;
+- Total de perguntas puladas;
+- Total de timeouts;
+- Precisão geral;
+- Tempo médio;
+- Melhor tempo;
+- Melhor streak;
+- Streak diário;
+- Melhor streak diário;
+- Prática no dia;
+- XP total;
+- XP ganho no dia;
+- Desempenho por modo;
+- Evolução da precisão;
+- Evolução da velocidade;
+- Desempenho em anos bissextos;
+- Desempenho por século.
+
+Estatísticas sem dados deverão apresentar estados vazios úteis:
+
+```text
+Ainda não há dados suficientes.
+Complete algumas sessões para visualizar sua evolução.
+```
+
+Não serão utilizados gráficos fictícios ou dados simulados.
+
+---
+
+# 21. Histórico
+
+Cada tentativa deverá conter, quando disponível:
+
+```javascript
+{
+    id,
+    timestamp,
+    mode,
+    question,
+    expectedAnswer,
+    userAnswer,
+    status,
+    timeMs,
+    xpGained,
+    streakBefore,
+    streakAfter,
+    isLeapYear,
+    failedStage
+}
+```
+
+Exemplo:
+
+```javascript
+{
+    "id": "attempt-1726500000000",
+    "timestamp": 1726500000000,
+    "mode": "full-date",
+    "question": {
+        "year": 1969,
+        "month": 6,
+        "day": 20
+    },
+    "expectedAnswer": 5,
+    "userAnswer": 0,
+    "status": "wrong",
+    "timeMs": 8400,
+    "xpGained": 0,
+    "streakBefore": 3,
+    "streakAfter": 0,
+    "isLeapYear": false,
+    "failedStage": "final-weekday"
+}
+```
+
+O histórico ficará limitado às últimas 2.000 tentativas.
+
+---
+
+# 22. Revisão inteligente
+
+A arquitetura deverá registrar as etapas em que o usuário apresenta dificuldade.
+
+Categorias possíveis:
+
+```text
+century-anchor
+first-odd-check
+first-division
+second-odd-check
+second-division
+modulo-seven
+month-reference
+leap-year
+date-adjustment
+final-weekday
+```
+
+O sistema poderá detectar:
+
+- Maior taxa de erro;
+- Menor velocidade;
+- Meses problemáticos;
+- Séculos problemáticos;
+- Anos bissextos difíceis;
+- Tipos de exercício com baixo desempenho;
+- Erros recorrentes.
+
+Futuro modo:
+
+```text
+Praticar meus erros
+```
+
+Esse modo deverá reaproveitar o mesmo engine de perguntas, validação, XP e histórico.
+
+---
+
+# 23. Desafio diário
+
+A arquitetura será preparada para o desafio diário.
+
+Possível estrutura:
+
+```text
+Desafio Diário
+5 perguntas
+Conjunto fixo por data
+Pontuação
+Bônus de conclusão
+Streak diário
+```
+
+As perguntas poderão ser geradas com uma seed baseada na data, permitindo que o desafio seja consistente durante o mesmo dia.
+
+O desafio deverá reutilizar:
+
+- Gerador de perguntas;
+- Calendar Engine;
+- Odd + 11 Engine;
+- Validação;
+- Explicação;
+- Progressão;
+- Histórico.
+
+Não deverá existir uma segunda implementação paralela do sistema de XP.
+
+---
+
+# 24. Design visual
+
+A identidade visual será baseada em:
+
+```text
+OFF-WHITE / SAND + NAVY BLUE
+```
+
+## Fundo principal
+
+Inspirado em:
+
+- Areia seca;
+- Papel premium;
+- Marfim;
+- Limestone;
+- Branco quente.
+
+Sugestões:
+
+```css
+--paper: #fffdf8;
+--sand-50: #faf7f1;
+--sand-100: #f4efe7;
+--sand-200: #e7ded1;
+--sand-300: #d9cebf;
+```
+
+## Navy
+
+Cor principal de contraste:
+
+```css
+--navy-900: #122033;
+--navy-800: #17283f;
+--navy-700: #263d58;
+--navy-600: #38546f;
+```
+
+## Cinzas quentes
+
+```css
+--warm-gray-500: #9c958c;
+--warm-gray-600: #7c7972;
+--warm-gray-700: #5e625f;
+```
+
+## Sucesso
+
+Verde discreto:
+
+```css
+--success: #4d795e;
+--success-soft: #e8f0e8;
+```
+
+## Erro
+
+Vermelho queimado ou terracota:
+
+```css
+--error: #a95145;
+--error-soft: #f6e9e5;
+```
+
+## Conquista e XP
+
+Dourado/âmbar:
+
+```css
+--amber: #aa7d39;
+--amber-light: #d9b66b;
+```
+
+A paleta deverá evitar:
+
+- Neon;
+- Roxo intenso;
+- Gradientes exagerados;
+- Azul elétrico;
+- Cores infantis;
+- Mais de quatro cores fortes simultaneamente.
+
+---
+
+# 25. Tipografia
+
+## Tipografia de interface
+
+Pode utilizar:
+
+```text
+Manrope
+Inter
+IBM Plex Sans
+system-ui
+```
+
+Fallback:
+
+```css
+font-family:
+    Inter,
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
+```
+
+## Tipografia de números
+
+Para:
+
+- Anos;
+- Cronômetro;
+- XP;
+- Fórmulas;
+- Estatísticas;
+- Códigos.
+
+Pode utilizar:
+
+```text
+DM Mono
+IBM Plex Mono
+JetBrains Mono
+ui-monospace
+```
+
+Fallback:
+
+```css
+font-family:
+    "IBM Plex Mono",
+    "DM Mono",
+    ui-monospace,
+    SFMono-Regular,
+    Consolas,
+    monospace;
+```
+
+A fonte deverá ter fallback para funcionamento offline.
+
+Idealmente, a V2 não dependerá de Google Fonts para funcionar.
+
+---
+
+# 26. Animações
+
+As animações devem ser rápidas, suaves e funcionais.
+
+## Acerto
+
+- Check visual;
+- Mudança para verde;
+- Pequena expansão;
+- Entrada do feedback;
+- XP aparecendo;
+- Streak aumentando;
+- Barra avançando.
+
+## Erro
+
+- Terracota;
+- Indicação visual clara;
+- Entrada suave da correção;
+- Destaque da resposta correta;
+- Sem punição visual exagerada.
+
+## Timeout
+
+- Cor âmbar ou terracota suave;
+- Ícone de relógio;
+- Mensagem própria;
+- Indicação de que não houve resposta.
+
+## Pulo
+
+- Aparência diferente do erro;
+- Mensagem neutra;
+- Sem confundir com timeout.
+
+## Ganho de XP
+
+- Número `+XP`;
+- Pequeno deslocamento vertical;
+- Atualização do total;
+- Atualização da barra.
+
+## Streak
+
+- Incremento animado;
+- Destaque da chama;
+- Pequeno pulso;
+- Sem efeitos excessivos.
+
+## Novo recorde
+
+- Destaque dourado;
+- Mensagem específica;
+- Pequena animação de conquista.
+
+## Mudança de rank
+
+- Atualização da categoria;
+- Animação da barra;
+- Mensagem de promoção;
+- Destaque temporário do novo rank.
+
+## Mudança de modo
+
+- Atualização suave do título;
+- Transição da pergunta;
+- Reorganização de controles;
+- Feedback visual do modo selecionado.
+
+## Redução de movimento
+
+A aplicação deverá respeitar:
+
+```css
+@media (prefers-reduced-motion: reduce)
+```
+
+Nesse modo:
+
+- Animações serão removidas ou reduzidas;
+- Transições serão instantâneas;
+- Não haverá movimentos decorativos;
+- O feedback permanecerá totalmente disponível.
+
+---
+
+# 27. Responsividade
+
+O mobile será prioridade.
+
+A interface deverá funcionar em:
+
+- iPhone;
+- Android;
+- Tablets;
+- Desktop;
+- Orientação retrato;
+- Orientação paisagem.
+
+## Mobile
+
+- Botões com área de toque ampla;
+- Números grandes;
+- Cronômetro sempre visível;
+- Layout de coluna;
+- Navegação simplificada;
+- Feedback expansível;
+- Teclado virtual considerado;
+- Safe areas;
+- Notch;
+- Dynamic Island;
+- Uso com uma mão.
+
+## Desktop
+
+- Painel de configuração lateral;
+- Área de pergunta ampla;
+- Estatísticas distribuídas;
+- Maior aproveitamento horizontal;
+- Navegação centralizada.
+
+Uso de:
+
+```css
+env(safe-area-inset-top)
+env(safe-area-inset-right)
+env(safe-area-inset-bottom)
+env(safe-area-inset-left)
+```
+
+---
+
+# 28. Acessibilidade
+
+A aplicação deverá incluir:
+
+- HTML semântico;
+- Labels reais;
+- Foco visível;
+- Navegação por teclado;
+- `aria-live`;
+- `aria-selected`;
+- `role="tablist"`;
+- `role="tab"`;
+- `role="tabpanel"`;
+- `role="timer"`;
+- Contraste adequado;
+- Estados de erro acessíveis;
+- Estados de sucesso acessíveis;
+- Textos alternativos;
+- Feedback anunciado para leitores de tela.
+
+O cronômetro não deverá anunciar todos os segundos para não causar excesso de leitura.
+
+Ele poderá anunciar:
+
+- Início;
+- Últimos 10 segundos;
+- Timeout.
+
+---
+
+# 29. PWA
+
+O aplicativo será um PWA completo.
+
+## Manifest
+
+Deverá conter:
+
+- Nome;
+- Nome curto;
+- Descrição;
+- Ícones;
+- Ícones maskable;
+- Cor de tema;
+- Cor de fundo;
+- `display: standalone`;
+- `start_url`;
+- `scope`;
+- Idioma;
+- Orientação.
+
+## Service Worker
+
+Responsável por:
+
+- Cache inicial;
+- Funcionamento offline;
+- Cache versionado;
+- Atualização;
+- Remoção de cache antigo;
+- Fallback;
+- Recuperação após erro de rede.
+
+Arquivos essenciais no cache:
+
+```text
+index.html
+styles.css
+app.js
+manifest.json
+icon.svg
+ícones adicionais
+```
+
+## Atualização
+
+O Service Worker deverá usar versões:
+
+```javascript
+doomsday-mind-v2.0.0
+```
+
+Ao existir uma atualização:
+
+- O novo cache será criado;
+- O cache antigo será removido;
+- A aplicação poderá mostrar uma mensagem de atualização;
+- O usuário poderá recarregar a versão nova.
+
+---
+
+# 30. Armazenamento
+
+O projeto continuará usando `localStorage`.
+
+As informações deverão ser separadas.
+
+## Histórico
+
+```text
+doomsday-mind-history-v2
+```
+
+## Progresso
+
+```text
+doomsday-mind-progress-v2
+```
+
+## Preferências
+
+```text
+doomsday-mind-preferences-v2
+```
+
+## Configurações
+
+```text
+doomsday-mind-settings-v2
+```
+
+## Versão
+
+```text
+doomsday-mind-storage-version
+```
+
+O rank não será salvo de forma independente.
+
+O XP será a fonte de verdade.
+
+---
+
+# 31. Migração do sistema antigo
+
+A V2 deverá ler dados antigos quando possível.
+
+Dados antigos possíveis:
+
+```text
+doomsday-history
+doomsday-game
+best-streak
+```
+
+O sistema deverá:
+
+1. Detectar os dados antigos;
+2. Interpretar o histórico;
+3. Converter tentativas antigas;
+4. Preservar timestamps;
+5. Preservar modos;
+6. Preservar resultados;
+7. Preservar tempos;
+8. Inicializar campos que não existiam;
+9. Salvar a nova estrutura;
+10. Não apagar o formato antigo antes da migração terminar.
+
+Campos inexistentes deverão receber:
+
+```javascript
+null
+```
+
+Não deverão ser inventados valores.
+
+Por exemplo, se uma tentativa antiga não tinha a pergunta original:
+
+```javascript
+question: null
+```
+
+---
+
+# 32. Testes
+
+A V2 deverá possuir autoverificação.
+
+## Datas conhecidas
+
+Testar datas como:
+
+```text
+20/07/1969
+04/07/1776
+01/01/2000
+29/02/2024
+31/12/1999
+```
+
+## Anos comuns
+
+- 1901;
+- 1955;
+- 1969;
+- 1985;
+- 1999;
+- 2023.
+
+## Anos bissextos
+
+- 2000;
+- 2004;
+- 2020;
+- 2024;
+- 1900 como não bissexto;
+- 2100 como não bissexto.
+
+## Séculos
+
+- 1583;
+- 1700;
+- 1800;
+- 1900;
+- 2000;
+- 2100;
+- 2200;
+- 2500.
+
+## Ímpar + 11
+
+Testar:
+
+- Últimos dígitos pares;
+- Últimos dígitos ímpares;
+- Segunda etapa ímpar;
+- Anos terminados em 00;
+- Múltiplos de 28;
+- Limites do intervalo.
+
+## Interface
+
+Testar:
+
+- Respostas com clique;
+- Teclas 1–7;
+- Enter;
+- Escape;
+- Pular;
+- Timeout;
+- Alteração de modo;
+- Alteração de intervalo;
+- Alteração de tempo;
+- Campo numérico;
+- Dados vazios;
+- Limpeza de histórico.
+
+---
+
+# 33. Arquitetura de arquivos
+
+O projeto será mantido simples, sem dezenas de pastas.
+
+Estrutura principal:
+
+```text
+index.html
+styles.css
+app.js
+manifest.json
+service-worker.js
+icon.svg
+```
+
+O `app.js` terá seções internas organizadas:
+
+```javascript
+Calendar Engine
+Odd + 11 Engine
+Question Generator
+Answer Validator
+Explanation Engine
+Training Engine
+Progression
+Statistics
+Storage
+UI
+PWA Bootstrap
+```
+
+O CSS terá seções:
+
+```css
+Design Tokens
+Reset
+Base
+Typography
+Header
+Navigation
+Buttons
+Forms
+Practice
+Challenge
+Feedback
+Learning
+Progress
+Statistics
+History
+Responsive
+Accessibility
+Reduced Motion
+```
+
+---
+
+# 34. Experiência de primeira abertura
+
+Ao abrir pela primeira vez, o usuário verá:
+
+- Identidade Doomsday Mind;
+- Explicação curta do método;
+- Modo recomendado;
+- Uma pergunta simples;
+- Tempo livre;
+- Feedback completo;
+- Ganho inicial de XP.
+
+A primeira experiência não deverá exigir:
+
+- Conta;
+- Login;
+- Configuração complexa;
+- Permissão desnecessária;
+- Cadastro;
+- Internet contínua.
+
+---
+
+# 35. Estados vazios
+
+A aplicação deverá tratar estados sem dados.
+
+## Sem histórico
+
+```text
+Você ainda não completou nenhuma tentativa.
+Comece um treino para construir seu histórico.
+```
+
+## Sem estatísticas
+
+```text
+Ainda não há dados suficientes para calcular sua evolução.
+```
+
+## Rank inicial
+
+```text
+Você está começando sua jornada.
+Complete acertos para ganhar XP.
+```
+
+## Sem progresso diário
+
+```text
+Você ainda não praticou hoje.
+```
+
+## Histórico vazio após apagar dados
+
+```text
+Seu histórico foi limpo.
+A próxima tentativa aparecerá aqui.
+```
+
+---
+
+# 36. Estados de erro
+
+A aplicação deverá lidar com:
+
+- Entrada numérica inválida;
+- Falha ao ler `localStorage`;
+- Dados corrompidos;
+- Service Worker indisponível;
+- Falha de cache;
+- Intervalo inválido;
+- Ano inválido;
+- Mês inválido;
+- Tempo inválido;
+- Falha de migração.
+
+Quando possível, o sistema deverá:
+
+- Recuperar dados válidos;
+- Ignorar apenas registros inválidos;
+- Não quebrar a aplicação inteira;
+- Mostrar mensagem clara;
+- Manter o usuário capaz de treinar.
+
+---
+
+# 37. Desempenho
+
+O projeto não deverá utilizar framework pesado sem necessidade.
+
+Prioridades:
+
+- JavaScript vanilla;
+- Poucas dependências;
+- Carregamento rápido;
+- Cache eficiente;
+- Nenhuma API externa necessária;
+- Renderização apenas do que mudou;
+- Funções pequenas;
+- Dados limitados;
+- Histórico máximo de 2.000 itens.
+
+---
+
+# 38. Segurança e privacidade
+
+O aplicativo não terá:
+
+- Login;
+- Conta;
+- Backend;
+- Analytics;
+- API externa;
+- Banco remoto;
+- Rastreamento.
+
+Os dados ficarão no dispositivo do usuário.
+
+Será importante avisar:
+
+```text
+Se os dados do navegador forem apagados, o progresso local poderá ser perdido.
+```
+
+No futuro, poderá ser implementado:
+
+- Exportação JSON;
+- Importação JSON;
+- Backup manual;
+- Transferência entre dispositivos.
+
+---
+
+# 39. Futuras extensões
+
+Possibilidades futuras:
+
+- Conquistas;
+- Badges;
+- Desafio diário;
+- Ranking local;
+- Ranking online, caso solicitado;
+- Perfil;
+- Exportação;
+- Importação;
+- Gráficos de XP;
+- Gráficos de precisão;
+- Revisão inteligente;
+- Dificuldade adaptativa;
+- Missões semanais;
+- Meta diária;
+- Modo sobrevivência;
+- Modo sem erros;
+- Modo competitivo;
+- Modo reverso;
+- Treino de datas históricas;
+- Treino por século;
+- Treino por mês;
+- Sons;
+- Vibração;
+- Instalação aprimorada;
+- Ícones nativos para iOS e Android.
+
+---
+
+# 40. Resultado final esperado
+
+O produto final deverá parecer:
+
+```text
+Um aplicativo premium de treinamento mental
+para cálculo rápido de dias da semana,
+baseado no método Ímpar + 11,
+com aprendizado progressivo,
+correção inteligente,
+XP,
+ranks,
+streaks,
+histórico,
+estatísticas,
+funcionamento offline
+e experiência mobile refinada.
+```
+
+A aplicação não deverá parecer simplesmente:
+
+```text
+Uma calculadora com alguns cards.
+```
+
+Cada tela deverá ter:
+
+- Propósito;
+- Hierarquia;
+- Estados;
+- Feedback;
+- Acessibilidade;
+- Responsividade;
+- Animações;
+- Persistência;
+- Coerência visual;
+- Comportamento real.
+
+Esse é o escopo completo da V2 do **Doomsday Mind**.
